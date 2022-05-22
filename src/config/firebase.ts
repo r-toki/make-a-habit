@@ -12,11 +12,11 @@ const config = {
   measurementId: 'G-8DEQ32LR47',
 };
 
-export function initializeFirebaseApp() {
+export const initializeFirebaseApp = () => {
   initializeApp(config);
 
   if (!import.meta.env.PROD) {
     connectAuthEmulator(getAuth(), 'http://localhost:9099', { disableWarnings: true });
     connectFirestoreEmulator(getFirestore(), 'localhost', 8080);
   }
-}
+};

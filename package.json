@@ -6,7 +6,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deploy": "yarn build && firebase deploy"
+    "deploy": "yarn build && firebase deploy",
+    "emu": "firebase emulators:start --import=./emulator-export --export-on-exit",
+    "emu:clean": "firebase emulators:start"
   },
   "dependencies": {
     "firebase": "^9.8.1",
