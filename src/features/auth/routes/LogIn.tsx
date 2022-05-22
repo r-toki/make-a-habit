@@ -29,8 +29,8 @@ export const LogIn: FC = () => {
 
         <Form<RegisterValues, typeof schema> onSubmit={logIn} schema={schema}>
           {({ register, formState }) => (
-            <Stack spacing="4">
-              <Stack>
+            <Stack spacing="6">
+              <Stack spacing="4">
                 <InputField
                   label="email"
                   registration={register('email')}

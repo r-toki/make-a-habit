@@ -32,8 +32,8 @@ export const NewHabit: FC = () => {
           options={{ defaultValues: { days: [] } }}
         >
           {({ register, formState }) => (
-            <Stack spacing="4">
-              <Stack>
+            <Stack spacing="6">
+              <Stack spacing="4">
                 <TextAreaField
                   label="content"
                   registration={register('content')}

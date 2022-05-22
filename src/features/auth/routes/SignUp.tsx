@@ -37,8 +37,8 @@ export const SignUp: FC = () => {
 
         <Form<RegisterValues, typeof schema> onSubmit={signUp} schema={schema}>
           {({ register, formState }) => (
-            <Stack spacing="4">
-              <Stack>
+            <Stack spacing="6">
+              <Stack spacing="4">
                 <InputField
                   label="name"
                   registration={register('name')}
