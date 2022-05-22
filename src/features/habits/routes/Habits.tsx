@@ -11,8 +11,8 @@ type HabitItemProps = { habit: HabitDoc };
 const HabitItem: FC<HabitItemProps> = ({ habit }) => {
   return (
     <HStack>
-      <CircularProgress size="64px" />
-      <Box>
+      <CircularProgress size="64px" value={habit.achievementRate} />
+      <Box flex="1">
         <Heading size="sm">{habit.content}</Heading>
         <Box fontSize="sm">{habit.formattedDays}</Box>
         <Box fontSize="sm"> {habit.formattedPeriod}</Box>

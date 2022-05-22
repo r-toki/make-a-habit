@@ -1,6 +1,7 @@
 import { Box, Button, Divider, Stack } from '@chakra-ui/react';
 import { FC } from 'react';
 import { NestedValue } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form } from '@/components/Form';
@@ -22,13 +23,20 @@ type RegisterValues = {
 };
 
 export const NewHabit: FC = () => {
+  const navigate = useNavigate();
+
   const { createHabit } = useCreateHabit();
+
+  const onCreateHabit = async ({ content, days }: { content: string; days: string[] }) => {
+    await createHabit({ content, days });
+    navigate('/app/habits');
+  };
 
   return (
     <Layout title="Create a New Habit">
       <Box py="4">
         <Form<RegisterValues, typeof schema>
-          onSubmit={createHabit}
+          onSubmit={onCreateHabit}
           schema={schema}
           options={{ defaultValues: { days: [] } }}
         >

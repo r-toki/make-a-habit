@@ -26,6 +26,8 @@ const getLabel = (v: string) => {
 export type HabitData = {
   content: string;
   days: string[];
+  totalDaysCount: number;
+  successDaysCount: number;
   createdAt: Timestamp;
   scheduledArchivedAt: Timestamp;
   archivedAt: Timestamp | null;
@@ -38,7 +40,14 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   get formattedPeriod() {
-    return `${formatDate(this.createdAt)} ~ ${formatDate(this.scheduledArchivedAt)}`;
+    if (this.archivedAt) {
+      return `${formatDate(this.createdAt)} ~ ${formatDate(this.scheduledArchivedAt)}`;
+    }
+    return `${formatDate(this.createdAt)} ~ (in progress)`;
+  }
+
+  get achievementRate() {
+    return this.successDaysCount / this.totalDaysCount;
   }
 
   static create(
@@ -52,6 +61,8 @@ export class HabitDoc extends FireDocument<HabitData> {
       this.makeCreateInput(collection, null, {
         content,
         days,
+        totalDaysCount: days.length * 4,
+        successDaysCount: 0,
         createdAt: Timestamp.now(),
         scheduledArchivedAt,
         archivedAt: null,
