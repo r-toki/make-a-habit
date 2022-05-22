@@ -47,7 +47,7 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
       </Box>
 
       <Box flex="1" overflow="auto">
-        <Container>{children}</Container>
+        <Container minH="full">{children}</Container>
       </Box>
 
       <Box py="2" borderTopWidth="1px" bg="gray.50">

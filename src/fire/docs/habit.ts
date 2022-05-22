@@ -7,10 +7,7 @@ import { formatDate } from '@/utils/format';
 import { HabitsCollection } from '../collections/habits';
 import { FireDocument } from '../lib/fire-document';
 
-// NOTE: とりあえず 3 週間継続すれば、習慣化できるはずです
-const targetWeeks = 3;
-
-export const daysOptions = [
+export const daysOfWeekOptions = [
   { label: 'Mon.', value: 'Monday' },
   { label: 'Tue.', value: 'Tuesday' },
   { label: 'Wed.', value: 'Wednesday' },
@@ -21,25 +18,25 @@ export const daysOptions = [
 ];
 
 const getLabel = (v: string) => {
-  const found = daysOptions.find((o) => o.value === v);
+  const found = daysOfWeekOptions.find((o) => o.value === v);
   assertDefined(found);
   return found.label;
 };
 
 export type HabitData = {
   content: string;
-  days: string[];
-  totalDaysCount: number;
-  successDaysCount: number;
+  targetWeeksCount: number;
+  targetDaysOfWeek: string[];
   createdAt: Timestamp;
   scheduledArchivedAt: Timestamp;
   archivedAt: Timestamp | null;
+  succeededAtList: Timestamp[];
 };
 
 export interface HabitDoc extends HabitData {}
 export class HabitDoc extends FireDocument<HabitData> {
   get formattedDays() {
-    return this.days.map(getLabel).join(' ');
+    return this.targetDaysOfWeek.map(getLabel).join(' ');
   }
 
   get formattedPeriod() {
@@ -49,26 +46,39 @@ export class HabitDoc extends FireDocument<HabitData> {
     return `${formatDate(this.createdAt)} ~ (in progress)`;
   }
 
+  get successDaysCount() {
+    return this.succeededAtList.length;
+  }
+
+  get targetDaysCount() {
+    return this.targetWeeksCount * this.targetDaysOfWeek.length;
+  }
+
+  get achievementPercent() {
+    return this.successDaysCount / this.targetDaysCount;
+  }
+
   get achievementRate() {
-    return this.successDaysCount / this.totalDaysCount;
+    return `${this.successDaysCount} / ${this.targetDaysCount}`;
   }
 
   static create(
     collection: HabitsCollection,
-    { content, days }: Pick<HabitData, 'content' | 'days'>
+    { content, targetDaysOfWeek }: Pick<HabitData, 'content' | 'targetDaysOfWeek'>
   ) {
-    const fourWeeksLater = addWeeks(new Date(), targetWeeks);
+    const targetWeeksCount = 3;
+    const fourWeeksLater = addWeeks(new Date(), targetWeeksCount);
     const scheduledArchivedAt = Timestamp.fromDate(endOfDay(subDays(fourWeeksLater, 1)));
 
     return new HabitDoc(
       this.makeCreateInput(collection, null, {
         content,
-        days,
-        totalDaysCount: days.length * targetWeeks,
-        successDaysCount: 0,
+        targetWeeksCount,
+        targetDaysOfWeek,
         createdAt: Timestamp.now(),
         scheduledArchivedAt,
         archivedAt: null,
+        succeededAtList: [],
       })
     );
   }

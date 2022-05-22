@@ -8,18 +8,18 @@ import { Form } from '@/components/Form';
 import { CheckboxGroupField } from '@/components/Form/CheckboxGroupFIeld';
 import { TextAreaField } from '@/components/Form/TextareaField';
 import { Layout } from '@/components/Layout';
-import { daysOptions } from '@/fire/docs';
+import { daysOfWeekOptions } from '@/fire/docs';
 
 import { useCreateHabit } from '../api';
 
 const schema = z.object({
   content: z.string().min(1, 'Required').max(140),
-  days: z.array(z.string()).min(1, 'Required'),
+  targetDaysOfWeek: z.array(z.string()).min(1, 'Required'),
 });
 
 type RegisterValues = {
   content: string;
-  days: NestedValue<string[]>;
+  targetDaysOfWeek: NestedValue<string[]>;
 };
 
 export const NewHabit: FC = () => {
@@ -27,8 +27,14 @@ export const NewHabit: FC = () => {
 
   const { createHabit } = useCreateHabit();
 
-  const onCreateHabit = async ({ content, days }: { content: string; days: string[] }) => {
-    await createHabit({ content, days });
+  const onCreateHabit = async ({
+    content,
+    targetDaysOfWeek,
+  }: {
+    content: string;
+    targetDaysOfWeek: string[];
+  }) => {
+    await createHabit({ content, targetDaysOfWeek });
     navigate('/app/habits');
   };
 
@@ -38,7 +44,7 @@ export const NewHabit: FC = () => {
         <Form<RegisterValues, typeof schema>
           onSubmit={onCreateHabit}
           schema={schema}
-          options={{ defaultValues: { days: [] } }}
+          options={{ defaultValues: { targetDaysOfWeek: [] } }}
         >
           {({ register, formState }) => (
             <Stack spacing="6">
@@ -50,10 +56,10 @@ export const NewHabit: FC = () => {
                 />
 
                 <CheckboxGroupField
-                  label="days of the week"
-                  registration={register('days')}
-                  error={formState.errors.days}
-                  options={daysOptions}
+                  label="targetDaysOfWeek of the week"
+                  registration={register('targetDaysOfWeek')}
+                  error={formState.errors.targetDaysOfWeek}
+                  options={daysOfWeekOptions}
                 />
               </Stack>
 
