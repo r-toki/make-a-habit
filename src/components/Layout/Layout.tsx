@@ -4,11 +4,10 @@ import { BiHistory, BiMenu, BiNote } from 'react-icons/bi';
 
 type LayoutProps = {
   title: string;
-  footer?: true | undefined;
   children: ReactNode;
 };
 
-export const Layout: FC<LayoutProps> = ({ title, children, footer }) => {
+export const Layout: FC<LayoutProps> = ({ title, children }) => {
   return (
     <Stack h="full">
       <Box py="4" borderBottomWidth="1px">
@@ -23,34 +22,32 @@ export const Layout: FC<LayoutProps> = ({ title, children, footer }) => {
         <Container>{children}</Container>
       </Box>
 
-      {footer && (
-        <Box py="3" borderTopWidth="1px" bg="gray.50">
-          <Container>
-            <Flex justifyContent="space-around">
-              <VStack spacing="1">
-                <BiNote fontSize="30px" />
-                <Box fontWeight="bold" fontSize="xs">
-                  Record
-                </Box>
-              </VStack>
-
-              <VStack spacing="1">
-                <BiHistory fontSize="30px" />
-                <Box fontWeight="bold" fontSize="xs">
-                  History
-                </Box>
-              </VStack>
-
-              <VStack spacing="1">
-                <BiMenu fontSize="30px" />
-                <Box fontWeight="bold" fontSize="xs">
-                  Menu
-                </Box>
-              </VStack>
+      <Box py="2" borderTopWidth="1px" bg="gray.50">
+        <Container>
+          <Flex justifyContent="space-around">
+            <Flex direction="column" alignItems="center">
+              <BiNote fontSize="30px" />
+              <Box fontWeight="bold" fontSize="xs">
+                Record
+              </Box>
             </Flex>
-          </Container>
-        </Box>
-      )}
+
+            <Flex direction="column" alignItems="center">
+              <BiHistory fontSize="30px" />
+              <Box fontWeight="bold" fontSize="xs">
+                History
+              </Box>
+            </Flex>
+
+            <Flex direction="column" alignItems="center">
+              <BiMenu fontSize="30px" />
+              <Box fontWeight="bold" fontSize="xs">
+                Menu
+              </Box>
+            </Flex>
+          </Flex>
+        </Container>
+      </Box>
     </Stack>
   );
 };

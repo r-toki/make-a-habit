@@ -23,7 +23,7 @@ export const NewHabit: FC = () => {
   const { createHabit } = useCreateHabit();
 
   return (
-    <Layout title="Create a New Habit!">
+    <Layout title="Create a New Habit">
       <Box py="4">
         <Form<RegisterValues, typeof schema>
           onSubmit={createHabit}
