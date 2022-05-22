@@ -1,17 +1,36 @@
-import { Box } from '@chakra-ui/react';
+import { Box, CircularProgress, Heading, HStack, Stack } from '@chakra-ui/react';
 import { FC } from 'react';
 
 import { Layout } from '@/components/Layout';
+import { HabitDoc } from '@/fire/docs';
 
 import { useHabits } from '../api/useHabits';
 
+type HabitItemProps = { habit: HabitDoc };
+
+const HabitItem: FC<HabitItemProps> = ({ habit }) => {
+  return (
+    <HStack>
+      <CircularProgress size="64px" />
+      <Box>
+        <Heading size="sm">{habit.content}</Heading>
+        <Box fontSize="sm">{habit.formattedDays}</Box>
+        <Box fontSize="sm"> {habit.formattedPeriod}</Box>
+      </Box>
+    </HStack>
+  );
+};
+
 export const Habits: FC = () => {
   const { habits } = useHabits();
-  console.log(habits);
 
   return (
     <Layout title="Habits">
-      <Box py="4"></Box>
+      <Stack py="4" spacing="4">
+        {habits.map((h) => (
+          <HabitItem key={h.id} habit={h} />
+        ))}
+      </Stack>
     </Layout>
   );
 };
