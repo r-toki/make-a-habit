@@ -3,7 +3,6 @@ import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout';
-import { HabitDoc } from '@/fire/docs';
 import { assertDefined } from '@/utils/assert-defined';
 
 import { useHabit } from '../api/useHabit';
