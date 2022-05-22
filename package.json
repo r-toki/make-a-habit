@@ -7,7 +7,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "deploy": "yarn build && firebase deploy",
-    "emu": "firebase emulators:start --import=./emulator-export --export-on-exit",
+    "emu": "firebase emulators:start --import=.emulator-export --export-on-exit",
     "emu:clean": "firebase emulators:start"
   },
   "dependencies": {
