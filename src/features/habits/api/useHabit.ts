@@ -12,5 +12,19 @@ export const useHabit = (habitId: string) => {
     me.habitsCollection.findOne(habitId).then(setHabit);
   }, [habitId]);
 
-  return { habit, setHabit };
+  const doToday = async () => {
+    if (!habit) return;
+    habit.doToday();
+    await habit.save();
+    setHabit(new HabitDoc({ id: habit.id, ref: habit.ref, data: () => habit.data }));
+  };
+
+  const undoToday = async () => {
+    if (!habit) return;
+    habit.undoToday();
+    await habit.save();
+    setHabit(new HabitDoc({ id: habit.id, ref: habit.ref, data: () => habit.data }));
+  };
+
+  return { habit, doToday, undoToday };
 };
