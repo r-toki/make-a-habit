@@ -1,5 +1,5 @@
 import { Button, Center, Container, Divider, Heading, Stack } from '@chakra-ui/react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { FC } from 'react';
 import { z } from 'zod';
 
@@ -28,15 +28,16 @@ type RegisterValues = {
 
 export const SignUp: FC = () => {
   const signUp = async ({ email, password }: { email: string; password: string }) => {
-    // await signInWithEmailAndPassword(getAuth(), email, password);
+    await createUserWithEmailAndPassword(getAuth(), email, password);
   };
 
   return (
-    <Container maxW="md" py="4">
-      <Stack>
+    <Container maxW="lg" py="4">
+      <Stack spacing="4">
         <Center>
           <Heading>Make a Habit!</Heading>
         </Center>
+
         <Form<RegisterValues, typeof schema>
           onSubmit={({ email, password }) => {
             signUp({ email, password });
@@ -83,6 +84,7 @@ export const SignUp: FC = () => {
             </Stack>
           )}
         </Form>
+
         <Link alignSelf="start" to="/auth/log-in">
           to Log In
         </Link>
