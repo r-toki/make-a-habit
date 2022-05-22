@@ -16,14 +16,14 @@ export const useHabit = (habitId: string) => {
     if (!habit) return;
     habit.doToday();
     await habit.save();
-    setHabit(new HabitDoc({ id: habit.id, ref: habit.ref, data: () => habit.data }));
+    setHabit(habit.rebuild());
   };
 
   const undoToday = async () => {
     if (!habit) return;
     habit.undoToday();
     await habit.save();
-    setHabit(new HabitDoc({ id: habit.id, ref: habit.ref, data: () => habit.data }));
+    setHabit(habit.rebuild());
   };
 
   return { habit, doToday, undoToday };

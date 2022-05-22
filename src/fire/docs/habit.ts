@@ -82,6 +82,10 @@ export class HabitDoc extends FireDocument<HabitData> {
     );
   }
 
+  rebuild() {
+    return new HabitDoc({ id: this.id, ref: this.ref, data: () => this.data });
+  }
+
   doToday() {
     return this.edit({
       doneAtList: uniqWith([...this.doneAtList, Timestamp.now()], (a, b) =>
