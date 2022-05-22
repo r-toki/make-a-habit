@@ -52,11 +52,11 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   get targetDaysCount() {
-    return this.targetWeeksCount * this.targetDaysOfWeek.length;
+    return this.targetWeeksCount * 7;
   }
 
   get achievementPercent() {
-    return this.successDaysCount / this.targetDaysCount;
+    return (this.successDaysCount / this.targetDaysCount) * 100;
   }
 
   get achievementRate() {
@@ -100,7 +100,7 @@ export class HabitDoc extends FireDocument<HabitData> {
 
   undoToday() {
     return this.edit({
-      doneAtList: this.doneAtList.filter((d) => isSameDay(d.toDate(), new Date())),
+      doneAtList: this.doneAtList.filter((d) => !isSameDay(d.toDate(), new Date())),
     });
   }
 }

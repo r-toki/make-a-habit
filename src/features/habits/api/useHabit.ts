@@ -12,5 +12,5 @@ export const useHabit = (habitId: string) => {
     me.habitsCollection.findOne(habitId).then(setHabit);
   }, [habitId]);
 
-  return { habit };
+  return { habit, setHabit };
 };
