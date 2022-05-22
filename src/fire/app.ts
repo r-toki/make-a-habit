@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
-import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+import { collection, connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+
+import { UsersCollection } from './collections';
 
 const config = {
   apiKey: 'AIzaSyDPNRZICBrLoUOCNEnsCh4k_nRxKOkWpT0',
@@ -19,5 +21,4 @@ if (!import.meta.env.PROD) {
   connectFirestoreEmulator(getFirestore(), 'localhost', 8080);
 }
 
-export { getAuth };
-export const getDb = () => getFirestore();
+export const usersCollection = new UsersCollection(collection(getFirestore(), 'users'));

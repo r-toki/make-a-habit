@@ -1,7 +1,7 @@
 import { CollectionReference } from 'firebase/firestore';
 
-import { FireCollection } from '../base/fire-collection';
 import { UserData, UserDoc } from '../docs';
+import { FireCollection } from '../lib/fire-collection';
 
 export class UsersCollection extends FireCollection<UserData, UserDoc> {
   constructor(ref: CollectionReference) {

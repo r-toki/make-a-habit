@@ -1,6 +1,5 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
-import { getAuth } from '../../../config/firebase';
 import { UserDoc } from '../../../fire/docs/user';
 import { usersCollection } from '../../../fire/root-collections';
 

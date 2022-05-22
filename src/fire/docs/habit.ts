@@ -1,7 +1,7 @@
 import { serverTimestamp, Timestamp } from 'firebase/firestore';
 
-import { FireDocument } from '../base/fire-document';
 import { HabitsCollection } from '../collections/habits';
+import { FireDocument } from '../lib/fire-document';
 
 export type HabitData = {
   content: string;
