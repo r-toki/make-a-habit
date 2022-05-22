@@ -1,8 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
 
-import { UserDoc } from '../fire/docs';
-import { usersCollection } from '../fire/root-collections';
-import { assertDefined } from '../utils/assert-defined';
+import { usersCollection } from '@/fire/app';
+import { UserDoc } from '@/fire/docs';
+import { assertDefined } from '@/utils/assert-defined';
+
 import { useAuth } from './auth';
 
 type State = UserDoc;

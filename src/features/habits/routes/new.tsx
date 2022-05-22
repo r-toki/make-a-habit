@@ -3,10 +3,11 @@ import { FC } from 'react';
 import { NestedValue } from 'react-hook-form';
 import { z } from 'zod';
 
-import { Form } from '../../../components/Form';
-import { CheckboxGroupField } from '../../../components/Form/CheckboxGroupFIeld';
-import { TextAreaField } from '../../../components/Form/TextareaField';
-import { Layout } from '../../../components/Layout';
+import { Form } from '@/components/Form';
+import { CheckboxGroupField } from '@/components/Form/CheckboxGroupFIeld';
+import { TextAreaField } from '@/components/Form/TextareaField';
+import { Layout } from '@/components/Layout';
+
 import { useCreateHabit } from '../api/useCreateHabit';
 
 const schema = z.object({

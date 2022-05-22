@@ -1,5 +1,5 @@
-import { HabitDoc } from '../../../fire/docs';
-import { useMe } from '../../../providers/me';
+import { HabitDoc } from '@/fire/docs';
+import { useMe } from '@/providers/me';
 
 export const useCreateHabit = () => {
   const { me } = useMe();

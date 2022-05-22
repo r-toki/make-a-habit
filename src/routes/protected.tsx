@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { MeProvider } from '../providers/me';
-import { lazyImport } from '../utils/lazy-import';
+import { MeProvider } from '@/providers/me';
+import { lazyImport } from '@/utils/lazy-import';
 
-const { HabitsRoutes } = lazyImport(() => import('../features/habits'), 'HabitsRoutes');
+const { HabitsRoutes } = lazyImport(() => import('@/features/habits'), 'HabitsRoutes');
 
 const App: FC = () => {
   return (
