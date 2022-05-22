@@ -1,11 +1,11 @@
 import { Button, Center, Container, Divider, Heading, Stack } from '@chakra-ui/react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { FC } from 'react';
 import { z } from 'zod';
 
 import { Form } from '../../../components/Form/Form';
 import { InputField } from '../../../components/Form/InputField';
 import { Link } from '../../../components/Link/Link';
+import { useLogIn } from '../api/useLogIn';
 
 const schema = z.object({
   email: z.string().min(1, 'Required'),
@@ -18,9 +18,7 @@ type RegisterValues = {
 };
 
 export const LogIn: FC = () => {
-  const logIn = async ({ email, password }: { email: string; password: string }) => {
-    await signInWithEmailAndPassword(getAuth(), email, password);
-  };
+  const { logIn } = useLogIn();
 
   return (
     <Container maxW="lg" py="4">
@@ -29,12 +27,7 @@ export const LogIn: FC = () => {
           <Heading>Make a Habit!</Heading>
         </Center>
 
-        <Form<RegisterValues, typeof schema>
-          onSubmit={({ email, password }) => {
-            logIn({ email, password });
-          }}
-          schema={schema}
-        >
+        <Form<RegisterValues, typeof schema> onSubmit={logIn} schema={schema}>
           {({ register, formState }) => (
             <Stack spacing="4">
               <Stack>

@@ -5,7 +5,7 @@ export type UserData = { name: string };
 
 export interface UserDoc extends UserData {}
 export class UserDoc extends FireDocument<UserData> {
-  static create(collection: UsersCollection, { name }: UserData) {
-    return this.makeCreateInput(collection, null, { name });
+  static create(collection: UsersCollection, id: string, { name }: UserData) {
+    return new UserDoc(this.makeCreateInput(collection, id, { name }));
   }
 }
