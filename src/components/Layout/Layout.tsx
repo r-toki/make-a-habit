@@ -1,7 +1,21 @@
-import { Box, Center, Container, Flex, Heading, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Container,
+  Flex,
+  Heading,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Stack,
+} from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 import { BiHistory, BiMenu, BiNote } from 'react-icons/bi';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useLogOut } from '@/features/auth';
 
 type LayoutProps = {
   title: string;
@@ -11,6 +25,15 @@ type LayoutProps = {
 export const Layout: FC<LayoutProps> = ({ title, children }) => {
   const location = useLocation();
   const path = location.pathname.split('/').slice(1).join('/');
+
+  const navigate = useNavigate();
+
+  const { logOut } = useLogOut();
+
+  const onLogOut = async () => {
+    await logOut();
+    navigate('/auth/log-in');
+  };
 
   return (
     <Stack h="full">
@@ -55,12 +78,32 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
               </Box>
             </Flex>
 
-            <Flex direction="column" alignItems="center" color="gray.500">
-              <BiMenu fontSize="30px" />
-              <Box fontWeight="bold" fontSize="xs">
-                Menu
-              </Box>
-            </Flex>
+            <Box>
+              <Menu>
+                {({ isOpen }) => (
+                  <>
+                    <MenuButton>
+                      <Flex
+                        direction="column"
+                        alignItems="center"
+                        color={isOpen ? 'black' : 'gray.500'}
+                      >
+                        <BiMenu fontSize="30px" />
+                        <Box fontWeight="bold" fontSize="xs">
+                          Menu
+                        </Box>
+                      </Flex>
+                    </MenuButton>
+
+                    <MenuList>
+                      <MenuItem>Create a New Habit</MenuItem>
+                      <MenuDivider />
+                      <MenuItem onClick={onLogOut}>Log Out</MenuItem>
+                    </MenuList>
+                  </>
+                )}
+              </Menu>
+            </Box>
           </Flex>
         </Container>
       </Box>

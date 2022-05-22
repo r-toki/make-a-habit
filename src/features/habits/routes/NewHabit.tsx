@@ -8,7 +8,7 @@ import { CheckboxGroupField } from '@/components/Form/CheckboxGroupFIeld';
 import { TextAreaField } from '@/components/Form/TextareaField';
 import { Layout } from '@/components/Layout';
 
-import { useCreateHabit } from '../api/useCreateHabit';
+import { useCreateHabit } from '../api';
 
 const schema = z.object({
   content: z.string().min(1, 'Required').max(140),

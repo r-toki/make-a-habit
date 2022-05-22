@@ -1,5 +1,6 @@
 import { Button, Center, Container, Divider, Heading, Stack } from '@chakra-ui/react';
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form, InputField } from '@/components/Form';
@@ -18,7 +19,14 @@ type RegisterValues = {
 };
 
 export const LogIn: FC = () => {
+  const navigate = useNavigate();
+
   const { logIn } = useLogIn();
+
+  const onLogIn = async ({ email, password }: RegisterValues) => {
+    await logIn({ email, password });
+    navigate('/app/habits');
+  };
 
   return (
     <Container maxW="lg" py="4">
@@ -27,7 +35,7 @@ export const LogIn: FC = () => {
           <Heading>Make a Habit!</Heading>
         </Center>
 
-        <Form<RegisterValues, typeof schema> onSubmit={logIn} schema={schema}>
+        <Form<RegisterValues, typeof schema> onSubmit={onLogIn} schema={schema}>
           {({ register, formState }) => (
             <Stack spacing="6">
               <Stack spacing="4">
