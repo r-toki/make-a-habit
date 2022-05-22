@@ -4,13 +4,16 @@ import ReactDOM from 'react-dom/client';
 
 import { App } from './App';
 import { initializeFirebaseApp } from './config/firebase';
+import { AuthProvider } from './providers/auth';
 
 initializeFirebaseApp();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ChakraProvider>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </ChakraProvider>
   </React.StrictMode>
 );
