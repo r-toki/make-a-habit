@@ -21,11 +21,13 @@
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.31.2",
     "react-router-dom": "6",
+    "uuid": "^8.3.2",
     "zod": "^3.16.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
     "@vitejs/plugin-react": "^1.3.0",
