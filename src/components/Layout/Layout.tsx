@@ -4,6 +4,7 @@ import {
   Container,
   Flex,
   Heading,
+  HStack,
   Menu,
   MenuButton,
   MenuDivider,
@@ -12,7 +13,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
-import { BiHistory, BiMenu, BiNote } from 'react-icons/bi';
+import { BiHistory, BiLogOut, BiMenu, BiNote, BiPlus } from 'react-icons/bi';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useLogOut } from '@/features/auth';
@@ -60,6 +61,8 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
                   ? 'black'
                   : 'gray.500'
               }
+              cursor="pointer"
+              onClick={() => navigate('/app/habits')}
             >
               <BiNote fontSize="30px" />
               <Box fontWeight="bold" fontSize="xs">
@@ -70,7 +73,8 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
             <Flex
               direction="column"
               alignItems="center"
-              color={path.startsWith('app/habits/all') ? 'black' : 'gray.500'}
+              color={path.startsWith('/app/habits/all') ? 'black' : 'gray.500'}
+              cursor="pointer"
             >
               <BiHistory fontSize="30px" />
               <Box fontWeight="bold" fontSize="xs">
@@ -96,9 +100,19 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
                     </MenuButton>
 
                     <MenuList>
-                      <MenuItem>Create a New Habit</MenuItem>
+                      <MenuItem onClick={() => navigate('/app/habits/new')}>
+                        <HStack>
+                          <BiPlus fontSize="20px" />
+                          <Box>Create a New Habit</Box>
+                        </HStack>
+                      </MenuItem>
                       <MenuDivider />
-                      <MenuItem onClick={onLogOut}>Log Out</MenuItem>
+                      <MenuItem onClick={onLogOut}>
+                        <HStack>
+                          <BiLogOut fontSize="20px" />
+                          <Box>Log Out</Box>
+                        </HStack>
+                      </MenuItem>
                     </MenuList>
                   </>
                 )}
