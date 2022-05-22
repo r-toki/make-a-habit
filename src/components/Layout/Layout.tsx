@@ -13,7 +13,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
-import { BiHistory, BiLogOut, BiMenu, BiNote, BiPlus } from 'react-icons/bi';
+import { BiCheck, BiHistory, BiLogOut, BiMenu, BiPlus } from 'react-icons/bi';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useLogOut } from '@/features/auth';
@@ -64,9 +64,9 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
               cursor="pointer"
               onClick={() => navigate('/app/habits')}
             >
-              <BiNote fontSize="30px" />
+              <BiCheck fontSize="30px" />
               <Box fontWeight="bold" fontSize="xs">
-                Record
+                Habits
               </Box>
             </Flex>
 
