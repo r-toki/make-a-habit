@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Flex, Heading, VStack } from '@chakra-ui/react';
+import { Box, CircularProgress, Heading, VStack } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 

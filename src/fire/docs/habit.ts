@@ -38,7 +38,7 @@ export class HabitDoc extends FireDocument<HabitData> {
     if (this.archivedAt) {
       return `${formatDate(this.createdAt)} ~ ${formatDate(this.scheduledArchivedAt)}`;
     }
-    return `${formatDate(this.createdAt)} ~ (in progress)`;
+    return `${formatDate(this.createdAt)} ~ in progress`;
   }
 
   get successDaysCount() {

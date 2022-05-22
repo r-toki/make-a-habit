@@ -11,15 +11,15 @@ type HabitItemProps = { habit: HabitDoc };
 
 const HabitItem: FC<HabitItemProps> = ({ habit }) => {
   return (
-    <HStack>
-      <CircularProgress size="64px" value={habit.achievementPercent} />
-      <Box flex="1">
-        <Link to={`/app/habits/${habit.id}`}>
+    <Link to={`/app/habits/${habit.id}`}>
+      <HStack>
+        <CircularProgress size="64px" value={habit.achievementPercent} />
+        <Box flex="1">
           <Heading size="sm">{habit.content}</Heading>
-        </Link>
-        <Box fontSize="sm"> {habit.formattedPeriod}</Box>
-      </Box>
-    </HStack>
+          <Box fontSize="sm"> {habit.formattedPeriod}</Box>
+        </Box>
+      </HStack>
+    </Link>
   );
 };
 
