@@ -17,7 +17,6 @@ const HabitItem: FC<HabitItemProps> = ({ habit }) => {
         <Link to={`/app/habits/${habit.id}`}>
           <Heading size="sm">{habit.content}</Heading>
         </Link>
-        <Box fontSize="sm">{habit.formattedDays}</Box>
         <Box fontSize="sm"> {habit.formattedPeriod}</Box>
       </Box>
     </HStack>

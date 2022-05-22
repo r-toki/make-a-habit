@@ -16,12 +16,11 @@ export const Habit: FC = () => {
   return (
     <Layout title="Habits">
       {habit ? (
-        <VStack py="4">
-          <Flex direction="column" alignItems="center">
+        <VStack py="4" spacing="6">
+          <VStack>
             <Heading size="sm">{habit.content}</Heading>
-            <Box fontSize="sm">{habit.formattedDays}</Box>
             <Box fontSize="sm"> {habit.formattedPeriod}</Box>
-          </Flex>
+          </VStack>
 
           <Box
             h="320px"
