@@ -1,5 +1,5 @@
 import { FireDocument } from '../base/fire-document';
-import { UsersCollection } from '../collections/users';
+import { UsersCollection } from '../collections';
 
 export type UserData = { name: string };
 
