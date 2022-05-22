@@ -14,11 +14,14 @@
     "@chakra-ui/react": "^2.0.2",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@hookform/resolvers": "^2.8.10",
     "firebase": "^9.8.1",
     "framer-motion": "^6",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "6"
+    "react-hook-form": "^7.31.2",
+    "react-router-dom": "6",
+    "zod": "^3.16.1"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
