@@ -1,3 +1,5 @@
+import './index.css';
+
 import { FC } from 'react';
 
 import { AppProvider } from './providers/app';
