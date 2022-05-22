@@ -7,6 +7,9 @@ import { formatDate } from '@/utils/format';
 import { HabitsCollection } from '../collections/habits';
 import { FireDocument } from '../lib/fire-document';
 
+// NOTE: とりあえず 3 週間継続すれば、習慣化できるはずです
+const targetWeeks = 3;
+
 export const daysOptions = [
   { label: 'Mon.', value: 'Monday' },
   { label: 'Tue.', value: 'Tuesday' },
@@ -54,14 +57,14 @@ export class HabitDoc extends FireDocument<HabitData> {
     collection: HabitsCollection,
     { content, days }: Pick<HabitData, 'content' | 'days'>
   ) {
-    const fourWeeksLater = addWeeks(new Date(), 4);
+    const fourWeeksLater = addWeeks(new Date(), targetWeeks);
     const scheduledArchivedAt = Timestamp.fromDate(endOfDay(subDays(fourWeeksLater, 1)));
 
     return new HabitDoc(
       this.makeCreateInput(collection, null, {
         content,
         days,
-        totalDaysCount: days.length * 4,
+        totalDaysCount: days.length * targetWeeks,
         successDaysCount: 0,
         createdAt: Timestamp.now(),
         scheduledArchivedAt,
