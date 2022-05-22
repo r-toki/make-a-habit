@@ -1,5 +1,6 @@
-import { addWeeks, endOfDay, subDays } from 'date-fns';
+import { addWeeks, endOfDay, isSameDay, subDays } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
+import { last, uniqWith } from 'lodash-es';
 
 import { assertDefined } from '@/utils/assert-defined';
 import { formatDate } from '@/utils/format';
@@ -30,7 +31,7 @@ export type HabitData = {
   createdAt: Timestamp;
   scheduledArchivedAt: Timestamp;
   archivedAt: Timestamp | null;
-  succeededAtList: Timestamp[];
+  doneAtList: Timestamp[];
 };
 
 export interface HabitDoc extends HabitData {}
@@ -47,7 +48,7 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   get successDaysCount() {
-    return this.succeededAtList.length;
+    return this.doneAtList.length;
   }
 
   get targetDaysCount() {
@@ -60,6 +61,12 @@ export class HabitDoc extends FireDocument<HabitData> {
 
   get achievementRate() {
     return `${this.successDaysCount} / ${this.targetDaysCount}`;
+  }
+
+  get hasDoneToday() {
+    const latestDoneAt = last(this.doneAtList);
+    if (!latestDoneAt) return false;
+    return isSameDay(latestDoneAt.toDate(), new Date());
   }
 
   static create(
@@ -78,8 +85,22 @@ export class HabitDoc extends FireDocument<HabitData> {
         createdAt: Timestamp.now(),
         scheduledArchivedAt,
         archivedAt: null,
-        succeededAtList: [],
+        doneAtList: [],
       })
     );
+  }
+
+  doToday() {
+    return this.edit({
+      doneAtList: uniqWith([...this.doneAtList, Timestamp.now()], (a, b) =>
+        isSameDay(a.toDate(), b.toDate())
+      ),
+    });
+  }
+
+  undoToday() {
+    return this.edit({
+      doneAtList: this.doneAtList.filter((d) => isSameDay(d.toDate(), new Date())),
+    });
   }
 }
