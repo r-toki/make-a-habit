@@ -15,6 +15,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@hookform/resolvers": "^2.8.10",
+    "date-fns": "^2.28.0",
     "firebase": "^9.8.1",
     "framer-motion": "^6",
     "lodash-es": "^4.17.21",

@@ -1,4 +1,4 @@
-import { collection, getFirestore, serverTimestamp, Timestamp } from 'firebase/firestore';
+import { collection, getFirestore, Timestamp } from 'firebase/firestore';
 
 import { UsersCollection } from '../collections';
 import { HabitsCollection } from '../collections/habits';
@@ -11,11 +11,13 @@ export class UserDoc extends FireDocument<UserData> {
   habitsCollection = new HabitsCollection(collection(getFirestore(), this.ref.path, 'habits'));
 
   static create(collection: UsersCollection, id: string, { name }: Pick<UserData, 'name'>) {
+    const createdAt = Timestamp.now();
+
     return new UserDoc(
       this.makeCreateInput(collection, id, {
         name,
-        createdAt: serverTimestamp() as Timestamp,
-        updatedAt: serverTimestamp() as Timestamp,
+        createdAt,
+        updatedAt: createdAt,
       })
     );
   }

@@ -1,4 +1,5 @@
-import { serverTimestamp, Timestamp } from 'firebase/firestore';
+import { addWeeks, endOfDay, subDays } from 'date-fns';
+import { Timestamp } from 'firebase/firestore';
 
 import { HabitsCollection } from '../collections/habits';
 import { FireDocument } from '../lib/fire-document';
@@ -7,6 +8,7 @@ export type HabitData = {
   content: string;
   days: string[];
   createdAt: Timestamp;
+  scheduledArchivedAt: Timestamp;
   archivedAt: Timestamp | null;
 };
 
@@ -16,11 +18,15 @@ export class HabitDoc extends FireDocument<HabitData> {
     collection: HabitsCollection,
     { content, days }: Pick<HabitData, 'content' | 'days'>
   ) {
+    const fourWeeksLater = addWeeks(new Date(), 4);
+    const scheduledArchivedAt = Timestamp.fromDate(endOfDay(subDays(fourWeeksLater, 1)));
+
     return new HabitDoc(
       this.makeCreateInput(collection, null, {
         content,
         days,
-        createdAt: serverTimestamp() as Timestamp,
+        createdAt: Timestamp.now(),
+        scheduledArchivedAt,
         archivedAt: null,
       })
     );
