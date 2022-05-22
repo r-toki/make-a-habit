@@ -27,6 +27,7 @@
       {
         "allowSingleExtends": true
       }
-    ]
+    ],
+    "@typescript-eslint/member-ordering": "error"
   }
 }

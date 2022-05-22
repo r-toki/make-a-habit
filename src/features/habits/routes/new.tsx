@@ -7,6 +7,7 @@ import { Form } from '../../../components/Form';
 import { CheckboxGroupField } from '../../../components/Form/CheckboxGroupFIeld';
 import { TextAreaField } from '../../../components/Form/TextareaField';
 import { Layout } from '../../../components/Layout';
+import { useCreateHabit } from '../api/useCreateHabit';
 
 const schema = z.object({
   content: z.string().min(1, 'Required').max(140),
@@ -19,13 +20,13 @@ type RegisterValues = {
 };
 
 export const NewHabit: FC = () => {
+  const { createHabit } = useCreateHabit();
+
   return (
     <Layout title="Create a New Habit!">
       <Box py="4">
         <Form<RegisterValues, typeof schema>
-          onSubmit={(v) => {
-            console.log(v);
-          }}
+          onSubmit={createHabit}
           schema={schema}
           options={{ defaultValues: { days: [] } }}
         >
