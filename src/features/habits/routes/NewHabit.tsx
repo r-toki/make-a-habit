@@ -1,25 +1,23 @@
 import { Box, Button, Divider, Stack } from '@chakra-ui/react';
 import { FC } from 'react';
-import { NestedValue } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form } from '@/components/Form';
-import { CheckboxGroupField } from '@/components/Form/CheckboxGroupFIeld';
-import { TextAreaField } from '@/components/Form/TextareaField';
+import { TextAreaField } from '@/components/Form';
+import { RadioGroupField } from '@/components/Form/RadioGroupField';
 import { Layout } from '@/components/Layout';
-import { daysOfWeekOptions } from '@/fire/docs';
 
 import { useCreateHabit } from '../api';
 
 const schema = z.object({
   content: z.string().min(1, 'Required').max(140),
-  targetDaysOfWeek: z.array(z.string()).min(1, 'Required'),
+  targetWeeksCount: z.string(),
 });
 
 type RegisterValues = {
   content: string;
-  targetDaysOfWeek: NestedValue<string[]>;
+  targetWeeksCount: string;
 };
 
 export const NewHabit: FC = () => {
@@ -29,23 +27,19 @@ export const NewHabit: FC = () => {
 
   const onCreateHabit = async ({
     content,
-    targetDaysOfWeek,
+    targetWeeksCount,
   }: {
     content: string;
-    targetDaysOfWeek: string[];
+    targetWeeksCount: string;
   }) => {
-    await createHabit({ content, targetDaysOfWeek });
+    await createHabit({ content, targetWeeksCount });
     navigate('/app/habits');
   };
 
   return (
     <Layout title="Create a New Habit">
       <Box py="4">
-        <Form<RegisterValues, typeof schema>
-          onSubmit={onCreateHabit}
-          schema={schema}
-          options={{ defaultValues: { targetDaysOfWeek: [] } }}
-        >
+        <Form<RegisterValues, typeof schema> onSubmit={onCreateHabit} schema={schema}>
           {({ register, formState }) => (
             <Stack spacing="6">
               <Stack spacing="4">
@@ -55,11 +49,16 @@ export const NewHabit: FC = () => {
                   error={formState.errors.content}
                 />
 
-                <CheckboxGroupField
-                  label="targetDaysOfWeek of the week"
-                  registration={register('targetDaysOfWeek')}
-                  error={formState.errors.targetDaysOfWeek}
-                  options={daysOfWeekOptions}
+                <RadioGroupField
+                  label="weeks"
+                  registration={register('targetWeeksCount')}
+                  error={formState.errors.targetWeeksCount}
+                  options={[
+                    { label: '1 week', value: '1' },
+                    { label: '2 weeks', value: '2' },
+                    { label: '3 weeks', value: '3' },
+                  ]}
+                  defaultValue="1"
                 />
               </Stack>
 
