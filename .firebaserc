@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "make-a-habit-fd3f5"
+  },
+  "targets": {
+    "make-a-habit-fd3f5": {
+      "hosting": {
+        "a-habit": [
+          "dist"
+        ]
+      }
+    }
   }
 }
