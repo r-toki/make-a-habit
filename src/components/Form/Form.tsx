@@ -1,4 +1,4 @@
-import { Box, BoxProps } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm, UseFormProps, UseFormReturn } from 'react-hook-form';
 import { ZodType, ZodTypeDef } from 'zod';

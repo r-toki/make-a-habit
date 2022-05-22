@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
-import { UserDoc } from '../../../lib/fire/docs/user';
-import { usersCollection } from '../../../lib/fire/root-collections';
+import { UserDoc } from '../../../fire/docs/user';
+import { usersCollection } from '../../../fire/root-collections';
 
 export const useSignUp = () => {
   const signUp = async ({
