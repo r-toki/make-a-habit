@@ -8,7 +8,7 @@ const theme = extendTheme({
   components: {
     Heading: {
       defaultProps: {
-        size: 'lg',
+        size: 'md',
       },
     },
   },
