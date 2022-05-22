@@ -2,10 +2,9 @@ import { Button, Center, Container, Divider, Heading, Stack } from '@chakra-ui/r
 import { FC } from 'react';
 import { z } from 'zod';
 
-import { Form } from '../../../components/Form/Form';
-import { InputField } from '../../../components/Form/InputField';
-import { Link } from '../../../components/Link/Link';
-import { useSignUp } from '../api/useSignUp';
+import { Form, InputField } from '../../../components/Form';
+import { Link } from '../../../components/Link';
+import { useSignUp } from '../api';
 
 const schema = z
   .object({
