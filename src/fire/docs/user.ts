@@ -21,4 +21,8 @@ export class UserDoc extends FireDocument<UserData> {
       })
     );
   }
+
+  rebuild() {
+    return new UserDoc({ id: this.id, ref: this.ref, data: () => this.data });
+  }
 }

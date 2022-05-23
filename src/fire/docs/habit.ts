@@ -2,26 +2,11 @@ import { addWeeks, endOfDay, isSameDay, subDays } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { last, uniqWith } from 'lodash-es';
 
+import { Identity } from '@/lib/identity';
 import { formatDate } from '@/utils/format';
 
 import { HabitsCollection } from '../collections/habits';
 import { FireDocument } from '../lib/fire-document';
-
-// export const daysOfWeekOptions = [
-//   { label: 'Mon.', value: 'Monday' },
-//   { label: 'Tue.', value: 'Tuesday' },
-//   { label: 'Wed.', value: 'Wednesday' },
-//   { label: 'Thu.', value: 'Thursday' },
-//   { label: 'Fri.', value: 'Friday' },
-//   { label: 'Sat.', value: 'Saturday' },
-//   { label: 'Sun.', value: 'Sunday' },
-// ];
-
-// const getLabel = (v: string) => {
-//   const found = daysOfWeekOptions.find((o) => o.value === v);
-//   assertDefined(found);
-//   return found.label;
-// };
 
 export type HabitData = {
   content: string;
@@ -35,10 +20,7 @@ export type HabitData = {
 export interface HabitDoc extends HabitData {}
 export class HabitDoc extends FireDocument<HabitData> {
   get formattedPeriod() {
-    if (this.archivedAt) {
-      return `${formatDate(this.createdAt)} ~ ${formatDate(this.scheduledArchivedAt)}`;
-    }
-    return `${formatDate(this.createdAt)} ~ in progress`;
+    return `${formatDate(this.createdAt)} ~ ${formatDate(this.scheduledArchivedAt)}`;
   }
 
   get successDaysCount() {
@@ -67,8 +49,11 @@ export class HabitDoc extends FireDocument<HabitData> {
     collection: HabitsCollection,
     { content, targetWeeksCount }: Pick<HabitData, 'content' | 'targetWeeksCount'>
   ) {
-    const targetWeeksLater = addWeeks(new Date(), targetWeeksCount);
-    const scheduledArchivedAt = Timestamp.fromDate(endOfDay(subDays(targetWeeksLater, 1)));
+    const scheduledArchivedAt = Identity.of(new Date())
+      .map((d) => addWeeks(d, targetWeeksCount))
+      .map((d) => subDays(d, 1))
+      .map(endOfDay)
+      .map(Timestamp.fromDate).value;
 
     return new HabitDoc(
       this.makeCreateInput(collection, null, {
@@ -87,16 +72,14 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   doToday() {
-    return this.edit({
-      doneAtList: uniqWith([...this.doneAtList, Timestamp.now()], (a, b) =>
-        isSameDay(a.toDate(), b.toDate())
-      ),
-    });
+    const doneAtList = uniqWith([...this.doneAtList, Timestamp.now()], (a, b) =>
+      isSameDay(a.toDate(), b.toDate())
+    );
+    return this.edit({ doneAtList });
   }
 
   undoToday() {
-    return this.edit({
-      doneAtList: this.doneAtList.filter((d) => !isSameDay(d.toDate(), new Date())),
-    });
+    const doneAtList = this.doneAtList.filter((d) => !isSameDay(d.toDate(), new Date()));
+    return this.edit({ doneAtList });
   }
 }
