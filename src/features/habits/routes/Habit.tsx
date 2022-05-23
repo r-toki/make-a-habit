@@ -17,19 +17,29 @@ export const Habit: FC = () => {
   const { habitId } = useParams();
   assertDefined(habitId);
 
-  const { habit } = useHabit(habitId);
+  const { loading, habit, doToday, undoToday } = useHabit(habitId);
 
   const controls = useAnimation();
 
   useEffect(() => {
+    if (!habit) return;
+
     controls.start(
-      { backgroundColor: theme.colors.green[400], scale: [1, 1.1, 1] },
+      {
+        backgroundColor: habit.hasDoneToday ? theme.colors.green[400] : theme.colors.gray[200],
+        scale: [1, 1.1, 1],
+      },
       { duration: 1 }
     );
   }, [habit]);
 
   const onClick = () => {
-    //
+    if (!habit) return;
+    if (habit.hasDoneToday) {
+      undoToday();
+      return;
+    }
+    doToday();
   };
 
   return (
@@ -37,7 +47,7 @@ export const Habit: FC = () => {
       {habit ? (
         <VStack py="4" spacing="8">
           <VStack>
-            <Heading size="sm">{habit.content}</Heading>
+            <Heading>{habit.content}</Heading>
           </VStack>
 
           <Box onClick={onClick}>
