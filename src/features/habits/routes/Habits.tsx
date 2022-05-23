@@ -29,6 +29,11 @@ export const Habits: FC = () => {
   return (
     <Layout title="Habits">
       <Stack py="4" spacing="4">
+        {habits.length === 0 && (
+          <Link to="/app/habits/new" alignSelf="center" color="green.400">
+            <Heading>Create a New habit</Heading>
+          </Link>
+        )}
         {habits.map((h) => (
           <HabitItem key={h.id} habit={h} />
         ))}
