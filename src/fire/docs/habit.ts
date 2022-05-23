@@ -34,8 +34,8 @@ export class HabitDoc extends FireDocument<HabitData> {
   get progressPercent() {
     if (this.gaveUpAt) {
       const ratio =
-        differenceInDays(this.gaveUpAt.toDate(), this.startedAt.toDate()) /
-        differenceInDays(this.scheduledEndedAt.toDate(), this.startedAt.toDate());
+        (differenceInDays(this.gaveUpAt.toDate(), this.startedAt.toDate()) + 1) /
+        (differenceInDays(this.scheduledEndedAt.toDate(), this.startedAt.toDate()) + 1);
 
       return ratio * 100;
     }
@@ -45,8 +45,8 @@ export class HabitDoc extends FireDocument<HabitData> {
     }
 
     const ratio =
-      differenceInDays(addDays(new Date(), 1), this.startedAt.toDate()) /
-      differenceInDays(this.scheduledEndedAt.toDate(), this.startedAt.toDate());
+      (differenceInDays(new Date(), this.startedAt.toDate()) + 1) /
+      (differenceInDays(this.scheduledEndedAt.toDate(), this.startedAt.toDate()) + 1);
 
     return ratio * 100;
   }

@@ -1,4 +1,13 @@
-import { Box, Button, chakra, Heading, Stack, theme, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  chakra,
+  Heading,
+  Stack,
+  theme,
+  useMediaQuery,
+  VStack,
+} from '@chakra-ui/react';
 import { isValidMotionProp, motion, useAnimation } from 'framer-motion';
 import { FC, useEffect } from 'react';
 import { BiCheck } from 'react-icons/bi';
@@ -53,10 +62,12 @@ export const Habit: FC = () => {
     commentToday(comment);
   };
 
+  const [isLargerThan30em] = useMediaQuery('(min-width: 30em)');
+
   return (
     <Layout title="Habits">
       {habit ? (
-        <VStack py="4" spacing="8">
+        <VStack py={{ base: '2', md: '4' }} spacing={{ base: '4', md: '8' }}>
           <VStack>
             <Heading>{habit.content}</Heading>
           </VStack>
@@ -77,13 +88,13 @@ export const Habit: FC = () => {
             options={{ defaultValues: { comment: habit.todayHistory?.comment ?? '' } }}
           >
             {({ register, formState }) => (
-              <Stack w="sm">
+              <Stack w="xs">
                 <TextAreaField
                   registration={register('comment')}
                   error={formState.errors.comment}
                 />
 
-                <Button type="submit" disabled={loading}>
+                <Button type="submit" disabled={loading} size={isLargerThan30em ? 'md' : 'sm'}>
                   Comment
                 </Button>
               </Stack>

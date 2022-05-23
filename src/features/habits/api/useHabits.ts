@@ -1,5 +1,5 @@
 import { query, Timestamp, where } from 'firebase/firestore';
-import { orderBy, sortBy } from 'lodash-es';
+import { orderBy } from 'lodash-es';
 import { useEffect, useState } from 'react';
 
 import { HabitDoc } from '@/fire/docs';
