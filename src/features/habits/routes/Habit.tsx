@@ -35,6 +35,7 @@ export const Habit: FC = () => {
 
   const onClick = () => {
     if (!habit) return;
+
     if (habit.hasDoneToday) {
       undoToday();
       return;

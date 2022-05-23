@@ -43,5 +43,17 @@ export const useHabit = (habitId: string) => {
     setLoading(false);
   };
 
-  return { loading, habit, doToday, undoToday };
+  const commentToday = async (comment: string) => {
+    if (!habit || loading) return;
+
+    setLoading(true);
+
+    habit.commentToday(comment);
+    await habit.save();
+    setHabit(habit.rebuild());
+
+    setLoading(false);
+  };
+
+  return { loading, habit, doToday, undoToday, commentToday };
 };

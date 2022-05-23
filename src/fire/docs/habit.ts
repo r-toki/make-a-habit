@@ -68,7 +68,7 @@ export class HabitDoc extends FireDocument<HabitData> {
     if (todayHistory) {
       return this.edit({
         histories: this.histories
-          .filter((h) => h.id === todayHistory.id)
+          .filter((h) => h.id !== todayHistory.id)
           .concat({ ...todayHistory, done: true }),
       });
     }
@@ -84,14 +84,14 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   undoToday() {
-    if (!this.hasDoneToday) return;
+    if (!this.hasDoneToday) return this;
 
     const todayHistory = this.histories.find((v) => isToday(v.createdAt.toDate()));
 
     if (todayHistory) {
       return this.edit({
         histories: this.histories
-          .filter((h) => h.id === todayHistory.id)
+          .filter((h) => h.id !== todayHistory.id)
           .concat({ ...todayHistory, done: false }),
       });
     }
@@ -101,6 +101,29 @@ export class HabitDoc extends FireDocument<HabitData> {
         id: v4(),
         done: false,
         comment: '',
+        createdAt: Timestamp.now(),
+      }),
+    });
+  }
+
+  commentToday(comment: string) {
+    if (this.hasDoneToday) return this;
+
+    const todayHistory = this.histories.find((v) => isToday(v.createdAt.toDate()));
+
+    if (todayHistory) {
+      return this.edit({
+        histories: this.histories
+          .filter((h) => h.id !== todayHistory.id)
+          .concat({ ...todayHistory, comment }),
+      });
+    }
+
+    return this.edit({
+      histories: this.histories.concat({
+        id: v4(),
+        done: false,
+        comment,
         createdAt: Timestamp.now(),
       }),
     });
