@@ -1,4 +1,5 @@
-import { orderBy, query } from 'firebase/firestore';
+import { query, Timestamp, where } from 'firebase/firestore';
+import { orderBy, sortBy } from 'lodash-es';
 import { useEffect, useState } from 'react';
 
 import { HabitDoc } from '@/fire/docs';
@@ -11,8 +12,8 @@ export const useHabits = () => {
 
   useEffect(() => {
     me.habitsCollection
-      .findManyByQuery((ref) => query(ref, orderBy('createdAt', 'desc')))
-      .then(setHabits);
+      .findManyByQuery((ref) => query(ref, where('scheduledEndedAt', '>', Timestamp.now())))
+      .then((v) => setHabits(orderBy(v, (d) => d.startedAt, 'desc')));
   }, []);
 
   return { habits };

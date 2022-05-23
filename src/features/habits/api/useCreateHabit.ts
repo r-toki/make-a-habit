@@ -6,14 +6,14 @@ export const useCreateHabit = () => {
 
   const createHabit = async ({
     content,
-    targetWeeksCount,
+    targetDaysCount,
   }: {
     content: string;
-    targetWeeksCount: string;
+    targetDaysCount: number;
   }) => {
     const habit = HabitDoc.create(me.habitsCollection, {
       content,
-      targetWeeksCount: Number(targetWeeksCount),
+      targetDaysCount,
     });
     await habit.save();
   };

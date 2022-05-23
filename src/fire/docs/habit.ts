@@ -18,7 +18,7 @@ type History = {
 
 export type HabitData = {
   content: string;
-  targetWeeksCount: number;
+  targetDaysCount: number;
   startedAt: Timestamp;
   scheduledEndedAt: Timestamp;
   gaveUpAt: Timestamp | null;
@@ -61,10 +61,10 @@ export class HabitDoc extends FireDocument<HabitData> {
 
   static create(
     collection: HabitsCollection,
-    { content, targetWeeksCount }: Pick<HabitData, 'content' | 'targetWeeksCount'>
+    { content, targetDaysCount }: Pick<HabitData, 'content' | 'targetDaysCount'>
   ) {
     const scheduledEndedAt = Identity.of(new Date())
-      .map((d) => addWeeks(d, targetWeeksCount))
+      .map((d) => addDays(d, targetDaysCount))
       .map((d) => subDays(d, 1))
       .map(endOfDay)
       .map(Timestamp.fromDate).value;
@@ -72,7 +72,7 @@ export class HabitDoc extends FireDocument<HabitData> {
     return new HabitDoc(
       this.makeCreateInput(collection, null, {
         content,
-        targetWeeksCount,
+        targetDaysCount,
         startedAt: Timestamp.now(),
         scheduledEndedAt,
         gaveUpAt: null,

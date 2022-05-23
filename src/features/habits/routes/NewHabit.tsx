@@ -12,12 +12,12 @@ import { useCreateHabit } from '../api';
 
 const schema = z.object({
   content: z.string().min(1, 'Required').max(140),
-  targetWeeksCount: z.string(),
+  targetDaysCount: z.string(),
 });
 
 type RegisterValues = {
   content: string;
-  targetWeeksCount: string;
+  targetDaysCount: string;
 };
 
 export const NewHabit: FC = () => {
@@ -27,12 +27,12 @@ export const NewHabit: FC = () => {
 
   const onCreateHabit = async ({
     content,
-    targetWeeksCount,
+    targetDaysCount,
   }: {
     content: string;
-    targetWeeksCount: string;
+    targetDaysCount: string;
   }) => {
-    await createHabit({ content, targetWeeksCount });
+    await createHabit({ content, targetDaysCount: Number(targetDaysCount) });
     navigate('/app/habits');
   };
 
@@ -50,15 +50,16 @@ export const NewHabit: FC = () => {
                 />
 
                 <RadioGroupField
-                  label="weeks"
-                  registration={register('targetWeeksCount')}
-                  error={formState.errors.targetWeeksCount}
+                  label="days"
+                  registration={register('targetDaysCount')}
+                  error={formState.errors.targetDaysCount}
                   options={[
-                    { label: '1 week', value: '1' },
-                    { label: '2 weeks', value: '2' },
-                    { label: '3 weeks', value: '3' },
+                    { label: '1 day', value: '1' },
+                    { label: '3 days', value: '3' },
+                    { label: '1 week', value: '7' },
+                    { label: '3 weeks', value: '21' },
                   ]}
-                  defaultValue="1"
+                  defaultValue="3"
                 />
               </Stack>
 
