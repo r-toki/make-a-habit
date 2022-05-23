@@ -13,7 +13,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit }) => {
   return (
     <Link to={`/app/habits/${habit.id}`}>
       <HStack>
-        <CircularProgress size="64px" value={habit.achievementPercent} />
+        <CircularProgress size="64px" value={25} />
         <Box flex="1">
           <Heading size="sm">{habit.content}</Heading>
           <Box fontSize="sm"> {habit.formattedPeriod}</Box>

@@ -12,19 +12,5 @@ export const useHabit = (habitId: string) => {
     me.habitsCollection.findOne(habitId).then(setHabit);
   }, [habitId]);
 
-  const doToday = async () => {
-    if (!habit) return;
-    habit.doToday();
-    await habit.save();
-    setHabit(habit.rebuild());
-  };
-
-  const undoToday = async () => {
-    if (!habit) return;
-    habit.undoToday();
-    await habit.save();
-    setHabit(habit.rebuild());
-  };
-
-  return { habit, doToday, undoToday };
+  return { habit };
 };
