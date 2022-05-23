@@ -34,6 +34,10 @@ export class HabitDoc extends FireDocument<HabitData> {
     return this.histories.some((v) => isToday(v.createdAt.toDate()) && v.done);
   }
 
+  get todayHistory() {
+    return this.histories.find((v) => isToday(v.createdAt.toDate()));
+  }
+
   static create(
     collection: HabitsCollection,
     { content, targetWeeksCount }: Pick<HabitData, 'content' | 'targetWeeksCount'>
@@ -63,7 +67,7 @@ export class HabitDoc extends FireDocument<HabitData> {
   doToday() {
     if (this.hasDoneToday) return this;
 
-    const todayHistory = this.histories.find((v) => isToday(v.createdAt.toDate()));
+    const { todayHistory } = this;
 
     if (todayHistory) {
       return this.edit({
@@ -86,7 +90,7 @@ export class HabitDoc extends FireDocument<HabitData> {
   undoToday() {
     if (!this.hasDoneToday) return this;
 
-    const todayHistory = this.histories.find((v) => isToday(v.createdAt.toDate()));
+    const { todayHistory } = this;
 
     if (todayHistory) {
       return this.edit({
@@ -107,9 +111,7 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   commentToday(comment: string) {
-    if (this.hasDoneToday) return this;
-
-    const todayHistory = this.histories.find((v) => isToday(v.createdAt.toDate()));
+    const { todayHistory } = this;
 
     if (todayHistory) {
       return this.edit({
