@@ -11,7 +11,7 @@ import { assertDefined } from '@/utils/assert-defined';
 
 import { useHabit } from '../api/useHabit';
 
-const schema = z.object({ comment: z.string().min(1, 'Required') });
+const schema = z.object({ comment: z.string() });
 
 type RegisterValues = { comment: string };
 

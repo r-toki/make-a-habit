@@ -1,4 +1,5 @@
-import { addWeeks, endOfDay, isToday, subDays } from 'date-fns';
+import { addWeeks, differenceInDays, endOfDay, isPast, isToday, subDays } from 'date-fns';
+import { addDays } from 'date-fns/esm';
 import { Timestamp } from 'firebase/firestore';
 import { v4 } from 'uuid';
 
@@ -18,31 +19,51 @@ type History = {
 export type HabitData = {
   content: string;
   targetWeeksCount: number;
-  createdAt: Timestamp;
-  scheduledArchivedAt: Timestamp;
-  archivedAt: Timestamp | null;
+  startedAt: Timestamp;
+  scheduledEndedAt: Timestamp;
+  gaveUpAt: Timestamp | null;
   histories: History[];
 };
 
 export interface HabitDoc extends HabitData {}
 export class HabitDoc extends FireDocument<HabitData> {
   get formattedPeriod() {
-    return `${formatDate(this.createdAt)} ~ ${formatDate(this.scheduledArchivedAt)}`;
+    return `${formatDate(this.startedAt)} ~ ${formatDate(this.scheduledEndedAt)}`;
+  }
+
+  get progressPercent() {
+    if (this.gaveUpAt) {
+      const ratio =
+        differenceInDays(this.gaveUpAt.toDate(), this.startedAt.toDate()) /
+        differenceInDays(this.scheduledEndedAt.toDate(), this.startedAt.toDate());
+
+      return ratio * 100;
+    }
+
+    if (isPast(this.scheduledEndedAt.toDate())) {
+      return 100;
+    }
+
+    const ratio =
+      differenceInDays(addDays(new Date(), 1), this.startedAt.toDate()) /
+      differenceInDays(this.scheduledEndedAt.toDate(), this.startedAt.toDate());
+
+    return ratio * 100;
   }
 
   get hasDoneToday() {
-    return this.histories.some((v) => isToday(v.createdAt.toDate()) && v.done);
+    return this.histories.some((h) => isToday(h.createdAt.toDate()) && h.done);
   }
 
   get todayHistory() {
-    return this.histories.find((v) => isToday(v.createdAt.toDate()));
+    return this.histories.find((h) => isToday(h.createdAt.toDate()));
   }
 
   static create(
     collection: HabitsCollection,
     { content, targetWeeksCount }: Pick<HabitData, 'content' | 'targetWeeksCount'>
   ) {
-    const scheduledArchivedAt = Identity.of(new Date())
+    const scheduledEndedAt = Identity.of(new Date())
       .map((d) => addWeeks(d, targetWeeksCount))
       .map((d) => subDays(d, 1))
       .map(endOfDay)
@@ -52,9 +73,9 @@ export class HabitDoc extends FireDocument<HabitData> {
       this.makeCreateInput(collection, null, {
         content,
         targetWeeksCount,
-        createdAt: Timestamp.now(),
-        scheduledArchivedAt,
-        archivedAt: null,
+        startedAt: Timestamp.now(),
+        scheduledEndedAt,
+        gaveUpAt: null,
         histories: [],
       })
     );
