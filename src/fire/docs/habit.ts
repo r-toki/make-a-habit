@@ -53,7 +53,7 @@ export class HabitDoc extends FireDocument<HabitData> {
     }
 
     const ratio =
-      (differenceInDays(new Date(), this.startedAt.toDate()) + 1) /
+      (differenceInDays(endOfDay(new Date()), this.startedAt.toDate()) + 1) /
       (differenceInDays(this.scheduledEndedAt.toDate(), this.startedAt.toDate()) + 1);
 
     return ratio * 100;
