@@ -1,4 +1,13 @@
-import { addDays, differenceInDays, endOfDay, isPast, isToday, subDays } from 'date-fns';
+import {
+  addDays,
+  differenceInDays,
+  endOfDay,
+  isBefore,
+  isPast,
+  isSameDay,
+  isToday,
+  subDays,
+} from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { v4 } from 'uuid';
 
@@ -56,6 +65,29 @@ export class HabitDoc extends FireDocument<HabitData> {
 
   get todayHistory() {
     return this.histories.find((h) => isToday(h.createdAt.toDate()));
+  }
+
+  get hasEnded() {
+    return isPast(this.scheduledEndedAt.toDate());
+  }
+
+  get filledHistories() {
+    const res: History[] = [];
+    let d = this.startedAt.toDate();
+
+    while (isBefore(d, this.hasEnded ? this.scheduledEndedAt.toDate() : new Date())) {
+      const history = this.histories.find((h) => isSameDay(h.createdAt.toDate(), d));
+
+      if (history) {
+        res.push(history);
+      } else {
+        res.push({ id: v4(), done: false, comment: '', createdAt: Timestamp.fromDate(d) });
+      }
+
+      d = addDays(d, 1);
+    }
+
+    return res;
   }
 
   static create(
