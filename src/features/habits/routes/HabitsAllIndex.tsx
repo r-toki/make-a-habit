@@ -1,8 +1,8 @@
 import { Box, Heading, HStack, Stack } from '@chakra-ui/react';
 import { FC } from 'react';
-import { Link } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout';
+import { Link } from '@/components/Link';
 import { HabitDoc } from '@/fire/docs';
 
 import { useHabitsAll } from '../hooks';
@@ -24,11 +24,16 @@ const HabitItem: FC<HabitItemProps> = ({ habit }) => {
 };
 
 export const HabitsAllIndex: FC = () => {
-  const { habits } = useHabitsAll();
+  const { loading, habits } = useHabitsAll();
 
   return (
     <Layout title="Histories">
       <Stack py="4" spacing="4">
+        {!loading && habits.length === 0 && (
+          <Link to="/app/habits/new" alignSelf="center" color="green.400">
+            Create a New habit
+          </Link>
+        )}
         {habits.map((h) => (
           <HabitItem key={h.id} habit={h} />
         ))}

@@ -26,7 +26,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ history }) => {
         position="relative"
       >
         <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-          <BiCheck fontSize="32px" color="white" />
+          <BiCheck fontSize="36px" color="white" />
         </Box>
       </Box>
       <Box>

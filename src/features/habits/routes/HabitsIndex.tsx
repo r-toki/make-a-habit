@@ -28,14 +28,14 @@ const HabitItem: FC<HabitItemProps> = ({ habit }) => {
 };
 
 export const HabitsIndex: FC = () => {
-  const { habits } = useHabits();
+  const { loading, habits } = useHabits();
 
   return (
     <Layout title="Habits">
       <Stack py="4" spacing="4">
-        {habits.length === 0 && (
+        {!loading && habits.length === 0 && (
           <Link to="/app/habits/new" alignSelf="center" color="green.400">
-            <Heading>Create a New habit</Heading>
+            Create a New habit
           </Link>
         )}
         {habits.map((h) => (

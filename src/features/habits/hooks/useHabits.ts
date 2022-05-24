@@ -8,13 +8,17 @@ import { useMe } from '@/providers/me';
 export const useHabits = () => {
   const { me } = useMe();
 
+  const [loading, setLoading] = useState(false);
+
   const [habits, setHabits] = useState<HabitDoc[]>([]);
 
   useEffect(() => {
+    setLoading(true);
     me.habitsCollection
       .findManyByQuery((ref) => query(ref, where('scheduledEndedAt', '>', Timestamp.now())))
-      .then((v) => setHabits(orderBy(v, (d) => d.startedAt, 'desc')));
+      .then((v) => setHabits(orderBy(v, (d) => d.startedAt, 'desc')))
+      .then(() => setLoading(false));
   }, []);
 
-  return { habits };
+  return { loading, habits };
 };
