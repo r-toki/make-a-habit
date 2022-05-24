@@ -57,7 +57,9 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
               direction="column"
               alignItems="center"
               color={
-                path.startsWith('app/habits') && !path.startsWith('app/habits/all')
+                path.match('app/habits') &&
+                !path.match('app/habits/all') &&
+                !path.match(/app\/habits\/[\w-]+\/histories/g)
                   ? 'black'
                   : 'gray.500'
               }
@@ -73,7 +75,11 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
             <Flex
               direction="column"
               alignItems="center"
-              color={path.startsWith('app/habits/all') ? 'black' : 'gray.500'}
+              color={
+                path.match('app/habits/all') || path.match(/app\/habits\/[\w-]+\/histories/g)
+                  ? 'black'
+                  : 'gray.500'
+              }
               cursor="pointer"
               onClick={() => navigate('/app/habits/all')}
             >

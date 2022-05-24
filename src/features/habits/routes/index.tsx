@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import { HabitHistoriesIndex } from './HabitHistoriesIndex';
 import { HabitsAllIndex } from './HabitsAllIndex';
 import { HabitShow } from './HabitShow';
 import { HabitsIndex } from './HabitsIndex';
@@ -12,6 +13,7 @@ export const HabitsRoutes = () => {
       <Route path="new" element={<HabitsNew />} />
       <Route path=":habitId" element={<HabitShow />} />
       <Route path="all" element={<HabitsAllIndex />} />
+      <Route path=":habitId/histories" element={<HabitHistoriesIndex />} />
     </Routes>
   );
 };
