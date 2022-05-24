@@ -69,7 +69,9 @@ export const HabitShow: FC = () => {
       {habit ? (
         <VStack py={{ base: '2', md: '4' }} spacing={{ base: '4', md: '8' }}>
           <VStack>
-            <Heading>{habit.content}</Heading>
+            <Heading textAlign="center" whiteSpace="pre-wrap">
+              {habit.content}
+            </Heading>
           </VStack>
 
           <Box onClick={onToggleDone}>

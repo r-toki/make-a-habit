@@ -13,7 +13,9 @@ const HabitItem: FC<HabitItemProps> = ({ habit }) => {
   return (
     <Link to={`/app/habits/${habit.id}/histories`}>
       <Box>
-        <Heading size="sm">{habit.content}</Heading>
+        <Heading size="sm" whiteSpace="pre-wrap">
+          {habit.content}
+        </Heading>
         <HStack>
           <Box fontSize="sm">{habit.formattedPeriod}</Box>
           {!habit.hasEnded && <Box fontSize="sm">(in progress)</Box>}

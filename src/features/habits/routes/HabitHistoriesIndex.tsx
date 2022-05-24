@@ -34,7 +34,9 @@ const HistoryItem: FC<HistoryItemProps> = ({ history }) => {
           {format(history.createdAt.toDate(), 'MM/dd')}{' '}
           {formattedDay[history.createdAt.toDate().getDay()]}
         </Box>
-        <Box fontSize="sm">{history.comment}</Box>
+        <Box fontSize="sm" whiteSpace="pre-wrap">
+          {history.comment}
+        </Box>
       </Box>
     </Stack>
   );

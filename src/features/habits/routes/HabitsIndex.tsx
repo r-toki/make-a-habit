@@ -19,7 +19,9 @@ const HabitItem: FC<HabitItemProps> = ({ habit }) => {
           value={habit.progressPercent}
         />
         <Box flex="1">
-          <Heading size="sm">{habit.content}</Heading>
+          <Heading size="sm" whiteSpace="pre-wrap">
+            {habit.content}
+          </Heading>
           <Box fontSize="sm"> {habit.formattedPeriod}</Box>
         </Box>
       </HStack>
