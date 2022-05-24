@@ -52,7 +52,7 @@ export const HabitHistoriesIndex: FC = () => {
     <Layout title="Histories">
       {habit ? (
         <Stack py="4" spacing="4">
-          {habit.filledHistories.map((h) => (
+          {habit.displayedHistories.map((h) => (
             <HistoryItem key={h.id} history={h} />
           ))}
         </Stack>

@@ -71,7 +71,7 @@ export class HabitDoc extends FireDocument<HabitData> {
     return isPast(this.scheduledEndedAt.toDate());
   }
 
-  get filledHistories() {
+  get displayedHistories() {
     const res: History[] = [];
     let d = this.startedAt.toDate();
 
@@ -82,7 +82,7 @@ export class HabitDoc extends FireDocument<HabitData> {
           ? this.gaveUpAt.toDate()
           : this.hasEnded
           ? this.scheduledEndedAt.toDate()
-          : new Date()
+          : endOfDay(new Date())
       )
     ) {
       const history = this.histories.find((h) => isSameDay(h.createdAt.toDate(), d));
@@ -96,7 +96,7 @@ export class HabitDoc extends FireDocument<HabitData> {
       d = addDays(d, 1);
     }
 
-    return res;
+    return res.reverse();
   }
 
   get inProgress() {
