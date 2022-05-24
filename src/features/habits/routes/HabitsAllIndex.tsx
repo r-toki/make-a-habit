@@ -23,7 +23,7 @@ type HabitItemProps = { habit: HabitDoc; onRemove: () => void };
 const HabitItem: FC<HabitItemProps> = ({ habit, onRemove }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <Link to={`/app/habits/${habit.id}/histories`}>
+      <Link to={`/app/habits/${habit.id}/histories`} flex="1">
         <Box>
           <Heading size="sm" whiteSpace="pre-wrap">
             {habit.content}
