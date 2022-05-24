@@ -4,7 +4,6 @@ import {
   DocumentReference,
   getDoc,
   getDocs,
-  getFirestore,
   Query,
   query,
 } from 'firebase/firestore';
@@ -24,7 +23,7 @@ export class FireCollection<TData, TTransformed> {
   }
 
   async findOne(id: string) {
-    const snap = await getDoc(doc(getFirestore(), this.ref.path, id));
+    const snap = await getDoc(doc(this.ref, id));
     if (!snap.exists() || !snap.data()) throw new Error("Can't findOne");
     return this.transformer({
       id: snap.id,
@@ -34,7 +33,7 @@ export class FireCollection<TData, TTransformed> {
   }
 
   async findOneById(id: string) {
-    const snap = await getDoc(doc(getFirestore(), this.ref.path, id));
+    const snap = await getDoc(doc(this.ref, id));
     if (!snap.exists() || !snap.data()) return undefined;
     return this.transformer({
       id: snap.id,

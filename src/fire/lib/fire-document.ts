@@ -4,11 +4,9 @@ import {
   doc,
   DocumentReference,
   DocumentSnapshot,
-  getFirestore,
   PartialWithFieldValue,
   setDoc,
 } from 'firebase/firestore';
-import { v4 } from 'uuid';
 
 import { FireCollection } from './fire-collection';
 
@@ -43,11 +41,7 @@ export class FireDocument<TData> {
     id: null | string,
     data: TData
   ): FireDocumentInput<TData> {
-    const docRef = doc(
-      getFirestore(),
-      collection.ref.path,
-      id ? id : v4()
-    ) as DocumentReference<TData>;
+    const docRef = id ? doc(collection.ref, id) : doc(collection.ref);
     return {
       ref: docRef,
       id: docRef.id,
