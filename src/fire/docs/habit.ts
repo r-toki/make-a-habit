@@ -1,5 +1,4 @@
-import { addWeeks, differenceInDays, endOfDay, isPast, isToday, subDays } from 'date-fns';
-import { addDays } from 'date-fns/esm';
+import { addDays, differenceInDays, endOfDay, isPast, isToday, subDays } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { v4 } from 'uuid';
 
@@ -91,21 +90,19 @@ export class HabitDoc extends FireDocument<HabitData> {
     const { todayHistory } = this;
 
     if (todayHistory) {
-      return this.edit({
-        histories: this.histories
-          .filter((h) => h.id !== todayHistory.id)
-          .concat({ ...todayHistory, done: true }),
-      });
+      const histories = this.histories.map((h) =>
+        h.id === todayHistory.id ? { ...todayHistory, done: true } : h
+      );
+      return this.edit({ histories });
     }
 
-    return this.edit({
-      histories: this.histories.concat({
-        id: v4(),
-        done: true,
-        comment: '',
-        createdAt: Timestamp.now(),
-      }),
+    const histories = this.histories.concat({
+      id: v4(),
+      done: true,
+      comment: '',
+      createdAt: Timestamp.now(),
     });
+    return this.edit({ histories });
   }
 
   undoToday() {
@@ -114,41 +111,37 @@ export class HabitDoc extends FireDocument<HabitData> {
     const { todayHistory } = this;
 
     if (todayHistory) {
-      return this.edit({
-        histories: this.histories
-          .filter((h) => h.id !== todayHistory.id)
-          .concat({ ...todayHistory, done: false }),
-      });
+      const histories = this.histories.map((h) =>
+        h.id === todayHistory.id ? { ...todayHistory, done: false } : h
+      );
+      return this.edit({ histories });
     }
 
-    return this.edit({
-      histories: this.histories.concat({
-        id: v4(),
-        done: false,
-        comment: '',
-        createdAt: Timestamp.now(),
-      }),
+    const histories = this.histories.concat({
+      id: v4(),
+      done: false,
+      comment: '',
+      createdAt: Timestamp.now(),
     });
+    return this.edit({ histories });
   }
 
   commentToday(comment: string) {
     const { todayHistory } = this;
 
     if (todayHistory) {
-      return this.edit({
-        histories: this.histories
-          .filter((h) => h.id !== todayHistory.id)
-          .concat({ ...todayHistory, comment }),
-      });
+      const histories = this.histories.map((h) =>
+        h.id === todayHistory.id ? { ...todayHistory, comment } : h
+      );
+      return this.edit({ histories });
     }
 
-    return this.edit({
-      histories: this.histories.concat({
-        id: v4(),
-        done: false,
-        comment,
-        createdAt: Timestamp.now(),
-      }),
+    const histories = this.histories.concat({
+      id: v4(),
+      done: false,
+      comment,
+      createdAt: Timestamp.now(),
     });
+    return this.edit({ histories });
   }
 }
