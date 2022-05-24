@@ -28,7 +28,7 @@ const ChakraBox = chakra(motion.div, {
   shouldForwardProp: (prop) => isValidMotionProp(prop) || prop === 'children',
 });
 
-export const Habit: FC = () => {
+export const HabitShow: FC = () => {
   const { habitId } = useParams();
   assertDefined(habitId);
 

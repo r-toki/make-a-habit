@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { Form } from '@/components/Form';
 import { TextAreaField } from '@/components/Form';
-import { RadioGroupField } from '@/components/Form/RadioGroupField';
+import { RadioGroupField } from '@/components/Form';
 import { Layout } from '@/components/Layout';
 
 import { useCreateHabit } from '../hooks';
@@ -20,7 +20,7 @@ type RegisterValues = {
   targetDaysCount: string;
 };
 
-export const NewHabit: FC = () => {
+export const HabitsNew: FC = () => {
   const navigate = useNavigate();
 
   const { createHabit } = useCreateHabit();

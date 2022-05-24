@@ -23,7 +23,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit }) => {
   );
 };
 
-export const Habits: FC = () => {
+export const HabitsIndex: FC = () => {
   const { habits } = useHabits();
 
   return (

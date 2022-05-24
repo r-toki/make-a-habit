@@ -1,15 +1,15 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { Habit } from './Habit';
-import { Habits } from './Habits';
-import { NewHabit } from './NewHabit';
+import { HabitShow } from './HabitShow';
+import { HabitsIndex } from './HabitsIndex';
+import { HabitsNew } from './HabitsNew';
 
 export const HabitsRoutes = () => {
   return (
     <Routes>
-      <Route path="" element={<Habits />} />
-      <Route path="new" element={<NewHabit />} />
-      <Route path=":habitId" element={<Habit />} />
+      <Route path="" element={<HabitsIndex />} />
+      <Route path="new" element={<HabitsNew />} />
+      <Route path=":habitId" element={<HabitShow />} />
     </Routes>
   );
 };
