@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Link';
 
-import { useLogIn } from '../api';
+import { useLogIn } from '../hooks';
 
 const schema = z.object({
   email: z.string().min(1, 'Required'),

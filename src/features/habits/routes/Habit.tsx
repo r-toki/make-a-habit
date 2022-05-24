@@ -18,7 +18,7 @@ import { Form, TextAreaField } from '@/components/Form';
 import { Layout } from '@/components/Layout';
 import { assertDefined } from '@/utils/assert-defined';
 
-import { useHabit } from '../api/useHabit';
+import { useHabit } from '../hooks/useHabit';
 
 const schema = z.object({ comment: z.string() });
 

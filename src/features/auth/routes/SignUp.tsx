@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { Form, InputField } from '../../../components/Form';
 import { Link } from '../../../components/Link';
-import { useSignUp } from '../api';
+import { useSignUp } from '../hooks';
 
 const schema = z
   .object({

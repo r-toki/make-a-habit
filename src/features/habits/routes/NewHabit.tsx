@@ -8,7 +8,7 @@ import { TextAreaField } from '@/components/Form';
 import { RadioGroupField } from '@/components/Form/RadioGroupField';
 import { Layout } from '@/components/Layout';
 
-import { useCreateHabit } from '../api';
+import { useCreateHabit } from '../hooks';
 
 const schema = z.object({
   content: z.string().min(1, 'Required').max(140),

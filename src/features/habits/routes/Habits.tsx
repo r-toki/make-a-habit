@@ -5,7 +5,7 @@ import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
 import { HabitDoc } from '@/fire/docs';
 
-import { useHabits } from '../api/useHabits';
+import { useHabits } from '../hooks/useHabits';
 
 type HabitItemProps = { habit: HabitDoc };
 
