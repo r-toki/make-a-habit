@@ -1,5 +1,16 @@
-import { Box, Heading, HStack, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Stack,
+} from '@chakra-ui/react';
 import { FC } from 'react';
+import { BiDotsVertical, BiTrash } from 'react-icons/bi';
 
 import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
@@ -7,26 +18,47 @@ import { HabitDoc } from '@/fire/docs';
 
 import { useHabitsAll } from '../hooks';
 
-type HabitItemProps = { habit: HabitDoc };
+type HabitItemProps = { habit: HabitDoc; onRemove: () => void };
 
-const HabitItem: FC<HabitItemProps> = ({ habit }) => {
+const HabitItem: FC<HabitItemProps> = ({ habit, onRemove }) => {
   return (
-    <Link to={`/app/habits/${habit.id}/histories`}>
-      <Box>
-        <Heading size="sm" whiteSpace="pre-wrap">
-          {habit.content}
-        </Heading>
-        <HStack>
-          <Box fontSize="sm">{habit.formattedPeriod}</Box>
-          {!habit.hasEnded && !habit.gaveUpAt && <Box fontSize="sm">(in progress)</Box>}
-        </HStack>
-      </Box>
-    </Link>
+    <Flex justifyContent="space-between" alignItems="center">
+      <Link to={`/app/habits/${habit.id}/histories`}>
+        <Box>
+          <Heading size="sm" whiteSpace="pre-wrap">
+            {habit.content}
+          </Heading>
+          <HStack>
+            <Box fontSize="sm">{habit.formattedPeriod}</Box>
+            {habit.inProgress && <Box fontSize="sm">(in progress)</Box>}
+          </HStack>
+        </Box>
+      </Link>
+
+      {!habit.inProgress && (
+        <Box>
+          <Menu>
+            <MenuButton color="gray.500">
+              <BiDotsVertical fontSize="20px" />
+            </MenuButton>
+
+            <MenuList>
+              <MenuItem onClick={onRemove}>
+                <HStack>
+                  <BiTrash fontSize="20px" />
+                  <Box>Delete</Box>
+                </HStack>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
+      )}
+    </Flex>
   );
 };
 
 export const HabitsAllIndex: FC = () => {
-  const { loading, habits } = useHabitsAll();
+  const { loading, habits, remove } = useHabitsAll();
 
   return (
     <Layout title="Histories">
@@ -37,7 +69,7 @@ export const HabitsAllIndex: FC = () => {
           </Link>
         )}
         {habits.map((h) => (
-          <HabitItem key={h.id} habit={h} />
+          <HabitItem key={h.id} habit={h} onRemove={() => remove(h)} />
         ))}
       </Stack>
     </Layout>

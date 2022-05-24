@@ -16,9 +16,25 @@ export const useHabits = () => {
     setLoading(true);
     me.habitsCollection
       .findManyByQuery((ref) => query(ref, where('scheduledEndedAt', '>', Timestamp.now())))
-      .then((v) => setHabits(orderBy(v, (d) => d.startedAt, 'desc')))
+      .then((v) =>
+        setHabits(
+          orderBy(
+            v.filter((e) => !e.gaveUpAt),
+            (d) => d.startedAt,
+            'desc'
+          )
+        )
+      )
       .then(() => setLoading(false));
   }, []);
 
-  return { loading, habits };
+  const giveUp = async (habit: HabitDoc) => {
+    setLoading(true);
+    habit.giveUp();
+    await habit.save();
+    setHabits((prev) => prev.filter((h) => h.id !== habit.id));
+    setLoading(false);
+  };
+
+  return { loading, habits, giveUp };
 };

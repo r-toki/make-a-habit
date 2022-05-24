@@ -99,6 +99,10 @@ export class HabitDoc extends FireDocument<HabitData> {
     return res;
   }
 
+  get inProgress() {
+    return !this.hasEnded && !this.gaveUpAt;
+  }
+
   static create(
     collection: HabitsCollection,
     { content, targetDaysCount }: Pick<HabitData, 'content' | 'targetDaysCount'>

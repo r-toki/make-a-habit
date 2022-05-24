@@ -1,5 +1,17 @@
-import { Box, CircularProgress, Heading, HStack, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  CircularProgress,
+  Heading,
+  HStack,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Stack,
+} from '@chakra-ui/react';
 import { FC } from 'react';
+import { BiDotsVertical, BiShocked } from 'react-icons/bi';
 
 import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
@@ -7,30 +19,48 @@ import { HabitDoc } from '@/fire/docs';
 
 import { useHabits } from '../hooks/useHabits';
 
-type HabitItemProps = { habit: HabitDoc };
+type HabitItemProps = { habit: HabitDoc; onGiveUp: () => void };
 
-const HabitItem: FC<HabitItemProps> = ({ habit }) => {
+const HabitItem: FC<HabitItemProps> = ({ habit, onGiveUp }) => {
   return (
-    <Link to={`/app/habits/${habit.id}`}>
-      <HStack spacing={{ base: '2', md: '4' }}>
-        <CircularProgress
-          size="64px"
-          color={habit.hasDoneToday ? 'green.400' : 'gray.400'}
-          value={habit.progressPercent}
-        />
-        <Box flex="1">
+    <HStack spacing={{ base: '2', md: '4' }}>
+      <CircularProgress
+        size="64px"
+        color={habit.hasDoneToday ? 'green.400' : 'gray.400'}
+        value={habit.progressPercent}
+      />
+
+      <Box flex="1">
+        <Link to={`/app/habits/${habit.id}`}>
           <Heading size="sm" whiteSpace="pre-wrap">
             {habit.content}
           </Heading>
           <Box fontSize="sm"> {habit.formattedPeriod}</Box>
-        </Box>
-      </HStack>
-    </Link>
+        </Link>
+      </Box>
+
+      <Box>
+        <Menu>
+          <MenuButton color="gray.500">
+            <BiDotsVertical fontSize="20px" />
+          </MenuButton>
+
+          <MenuList>
+            <MenuItem onClick={onGiveUp}>
+              <HStack>
+                <BiShocked fontSize="20px" />
+                <Box>Give Up ..</Box>
+              </HStack>
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      </Box>
+    </HStack>
   );
 };
 
 export const HabitsIndex: FC = () => {
-  const { loading, habits } = useHabits();
+  const { loading, habits, giveUp } = useHabits();
 
   return (
     <Layout title="Habits">
@@ -41,7 +71,7 @@ export const HabitsIndex: FC = () => {
           </Link>
         )}
         {habits.map((h) => (
-          <HabitItem key={h.id} habit={h} />
+          <HabitItem key={h.id} habit={h} onGiveUp={() => giveUp(h)} />
         ))}
       </Stack>
     </Layout>
