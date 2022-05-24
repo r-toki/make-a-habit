@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form } from '@/components/Form';
-import { TextAreaField } from '@/components/Form';
+import { TextareaField } from '@/components/Form';
 import { RadioGroupField } from '@/components/Form';
 import { Layout } from '@/components/Layout';
 
@@ -43,7 +43,7 @@ export const HabitsNew: FC = () => {
           {({ register, formState }) => (
             <Stack spacing="6">
               <Stack spacing="4">
-                <TextAreaField
+                <TextareaField
                   label="content"
                   registration={register('content')}
                   error={formState.errors.content}

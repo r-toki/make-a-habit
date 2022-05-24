@@ -73,8 +73,9 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
             <Flex
               direction="column"
               alignItems="center"
-              color={path.startsWith('/app/habits/all') ? 'black' : 'gray.500'}
+              color={path.startsWith('app/habits/all') ? 'black' : 'gray.500'}
               cursor="pointer"
+              onClick={() => navigate('/app/habits/all')}
             >
               <BiHistory fontSize="30px" />
               <Box fontWeight="bold" fontSize="xs">
