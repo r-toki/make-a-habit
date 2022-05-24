@@ -3,11 +3,11 @@ import { UseFormRegisterReturn } from 'react-hook-form';
 
 import { FieldWrapper, FieldWrapperPassThroughProps } from './FieldWrapper';
 
-type TextAreaFieldProps = FieldWrapperPassThroughProps & {
+type TextareaFieldProps = FieldWrapperPassThroughProps & {
   registration: Partial<UseFormRegisterReturn>;
 };
 
-export const TextAreaField = ({ label, registration, error }: TextAreaFieldProps) => {
+export const TextareaField = ({ label, registration, error }: TextareaFieldProps) => {
   return (
     <FieldWrapper label={label} error={error}>
       <Textarea {...registration} />

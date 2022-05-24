@@ -14,7 +14,7 @@ import { BiCheck } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
 import { z } from 'zod';
 
-import { Form, TextAreaField } from '@/components/Form';
+import { Form, TextareaField } from '@/components/Form';
 import { Layout } from '@/components/Layout';
 import { assertDefined } from '@/utils/assert-defined';
 
@@ -89,7 +89,7 @@ export const HabitShow: FC = () => {
           >
             {({ register, formState }) => (
               <Stack w="xs">
-                <TextAreaField
+                <TextareaField
                   registration={register('comment')}
                   error={formState.errors.comment}
                 />
