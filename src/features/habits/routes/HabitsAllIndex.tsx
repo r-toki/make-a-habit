@@ -18,7 +18,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit }) => {
         </Heading>
         <HStack>
           <Box fontSize="sm">{habit.formattedPeriod}</Box>
-          {!habit.hasEnded && <Box fontSize="sm">(in progress)</Box>}
+          {!habit.hasEnded && !habit.gaveUpAt && <Box fontSize="sm">(in progress)</Box>}
         </HStack>
       </Box>
     </Link>

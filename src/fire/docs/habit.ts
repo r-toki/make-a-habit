@@ -75,7 +75,16 @@ export class HabitDoc extends FireDocument<HabitData> {
     const res: History[] = [];
     let d = this.startedAt.toDate();
 
-    while (isBefore(d, this.hasEnded ? this.scheduledEndedAt.toDate() : new Date())) {
+    while (
+      isBefore(
+        d,
+        this.gaveUpAt
+          ? this.gaveUpAt.toDate()
+          : this.hasEnded
+          ? this.scheduledEndedAt.toDate()
+          : new Date()
+      )
+    ) {
       const history = this.histories.find((h) => isSameDay(h.createdAt.toDate(), d));
 
       if (history) {
@@ -175,5 +184,11 @@ export class HabitDoc extends FireDocument<HabitData> {
       createdAt: Timestamp.now(),
     });
     return this.edit({ histories });
+  }
+
+  giveUp() {
+    return this.edit({
+      gaveUpAt: Timestamp.now(),
+    });
   }
 }
