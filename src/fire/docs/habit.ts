@@ -17,7 +17,7 @@ import { formatDate } from '@/utils/format';
 import { HabitsCollection } from '../collections/habits';
 import { FireDocument } from '../lib/fire-document';
 
-type History = {
+export type History = {
   id: string;
   done: boolean;
   comment: string;

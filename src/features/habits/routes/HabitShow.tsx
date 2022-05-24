@@ -75,9 +75,7 @@ export const HabitShow: FC = () => {
           <Box onClick={onToggleDone}>
             <ChakraBox h="xs" w="xs" rounded="full" position="relative" animate={controls}>
               <Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)">
-                <VStack>
-                  <BiCheck fontSize="240px" color="white" />
-                </VStack>
+                <BiCheck fontSize="240px" color="white" />
               </Box>
             </ChakraBox>
           </Box>
