@@ -34,7 +34,7 @@ export const HabitsIndex: FC = () => {
     <Layout title="Habits">
       <Stack py="4" spacing="4">
         {!loading && habits.length === 0 && (
-          <Link to="/app/habits/new" alignSelf="center" color="green.400">
+          <Link to="/app/habits/new" alignSelf="center" color="green.400" fontWeight="bold">
             Create a New habit
           </Link>
         )}
