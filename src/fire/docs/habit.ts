@@ -8,6 +8,7 @@ import {
   isToday,
   subDays,
 } from 'date-fns';
+import { FireDocument } from 'fire-hose-web';
 import { Timestamp } from 'firebase/firestore';
 import { v4 } from 'uuid';
 
@@ -15,7 +16,6 @@ import { Identity } from '@/lib/identity';
 import { formatDate } from '@/utils/format';
 
 import { HabitsCollection } from '../collections/habits';
-import { FireDocument } from '../lib/fire-document';
 
 export type History = {
   id: string;
@@ -114,7 +114,7 @@ export class HabitDoc extends FireDocument<HabitData> {
       .map(Timestamp.fromDate).value;
 
     return new HabitDoc(
-      this.makeCreateInput(collection, null, {
+      this.makeConstructorInput(collection, null, {
         content,
         targetDaysCount,
         startedAt: Timestamp.now(),

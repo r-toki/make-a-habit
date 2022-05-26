@@ -1,8 +1,8 @@
+import { FireDocument } from 'fire-hose-web';
 import { collection, Timestamp } from 'firebase/firestore';
 
 import { UsersCollection } from '../collections';
 import { HabitsCollection } from '../collections/habits';
-import { FireDocument } from '../lib/fire-document';
 
 export type UserData = { name: string; createdAt: Timestamp; updatedAt: Timestamp };
 
@@ -14,7 +14,7 @@ export class UserDoc extends FireDocument<UserData> {
     const createdAt = Timestamp.now();
 
     return new UserDoc(
-      this.makeCreateInput(collection, id, {
+      this.makeConstructorInput(collection, id, {
         name,
         createdAt,
         updatedAt: createdAt,
