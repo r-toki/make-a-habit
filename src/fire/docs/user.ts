@@ -1,4 +1,4 @@
-import { collection, getFirestore, Timestamp } from 'firebase/firestore';
+import { collection, Timestamp } from 'firebase/firestore';
 
 import { UsersCollection } from '../collections';
 import { HabitsCollection } from '../collections/habits';
@@ -8,7 +8,7 @@ export type UserData = { name: string; createdAt: Timestamp; updatedAt: Timestam
 
 export interface UserDoc extends UserData {}
 export class UserDoc extends FireDocument<UserData> {
-  habitsCollection = new HabitsCollection(collection(getFirestore(), this.ref.path, 'habits'));
+  habitsCollection = new HabitsCollection(collection(this.ref, 'habits'));
 
   static create(collection: UsersCollection, id: string, { name }: Pick<UserData, 'name'>) {
     const createdAt = Timestamp.now();
