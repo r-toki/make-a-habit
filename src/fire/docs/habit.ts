@@ -128,6 +128,24 @@ export class HabitDoc extends FireDocument<HabitData> {
   insertHabitRecord(habitRecord: HabitRecordData) {
     return this.edit({ habitRecords: insertEntity(this.habitRecords, habitRecord) });
   }
+
+  toggleDoneToday() {
+    const todayHabitRecord = this.todayHabitRecord;
+    if (todayHabitRecord) {
+      this.insertHabitRecord(new HabitRecord(todayHabitRecord).toggleDone().data);
+    } else {
+      this.insertHabitRecord(HabitRecord.create().toggleDone().data);
+    }
+  }
+
+  doCommentToday(comment: string) {
+    const todayHabitRecord = this.todayHabitRecord;
+    if (todayHabitRecord) {
+      this.insertHabitRecord(new HabitRecord(todayHabitRecord).doComment(comment).data);
+    } else {
+      this.insertHabitRecord(HabitRecord.create().doComment(comment).data);
+    }
+  }
 }
 
 export interface HabitRecordData {

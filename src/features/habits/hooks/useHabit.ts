@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { HabitDoc, HabitRecord } from '@/fire/docs';
+import { HabitDoc } from '@/fire/docs';
 import { useMe } from '@/providers/me';
 import { assertDefined } from '@/utils/assert-defined';
 
@@ -35,23 +35,13 @@ export const useHabit = (habitId: string) => {
   const toggleDone = () =>
     mutate(async () => {
       assertDefined(habit);
-      const todayHabitRecord = habit.todayHabitRecord;
-      if (todayHabitRecord) {
-        habit.insertHabitRecord(new HabitRecord(todayHabitRecord).toggleDone(true).data);
-      } else {
-        habit.insertHabitRecord(HabitRecord.create().toggleDone().data);
-      }
+      habit.toggleDoneToday();
     });
 
   const doComment = (comment: string) =>
     mutate(async () => {
       assertDefined(habit);
-      const todayHabitRecord = habit.todayHabitRecord;
-      if (todayHabitRecord) {
-        habit.insertHabitRecord(new HabitRecord(todayHabitRecord).doComment(comment).data);
-      } else {
-        habit.insertHabitRecord(HabitRecord.create().doComment(comment).data);
-      }
+      habit.doCommentToday(comment);
     });
 
   return { loading, habit, toggleDone, doComment };
