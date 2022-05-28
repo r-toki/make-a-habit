@@ -1,10 +1,19 @@
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme, useTheme } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { AuthProvider } from './auth';
 
 const theme = extendTheme({
+  // NOTE: https://colorhunt.co/palette/24a19cfaeee7325288d96098
+  colors: {
+    primary: {
+      main: '#24A19C',
+    },
+    secondary: {
+      main: '#FAEEE7',
+    },
+  },
   components: {
     Heading: {
       defaultProps: {
@@ -27,3 +36,5 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
     </ChakraProvider>
   );
 };
+
+export const useAppTheme = () => useTheme<typeof theme>();

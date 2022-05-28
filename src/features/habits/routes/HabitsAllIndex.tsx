@@ -64,7 +64,7 @@ export const HabitsAllIndex: FC = () => {
     <Layout title="Histories">
       <Stack py="4" spacing="4">
         {!loading && habits.length === 0 && (
-          <Link to="/app/habits/new" alignSelf="center" color="green.400" fontWeight="bold">
+          <Link to="/app/habits/new" alignSelf="center" color="primary.main" fontWeight="bold">
             Create a New habit
           </Link>
         )}

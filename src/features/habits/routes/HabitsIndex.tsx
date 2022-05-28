@@ -25,7 +25,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit, onGiveUp }) => {
     <HStack spacing={{ base: '2', md: '4' }}>
       <CircularProgress
         size="64px"
-        color={habit.hasDoneToday ? 'green.400' : 'gray.400'}
+        color={habit.hasDoneToday ? 'primary.main' : 'secondary.main'}
         value={habit.progressPercent}
       />
 
@@ -65,7 +65,7 @@ export const HabitsIndex: FC = () => {
     <Layout title="Habits">
       <Stack py="4" spacing="4">
         {!loading && habits.length === 0 && (
-          <Link to="/app/habits/new" alignSelf="center" color="green.400" fontWeight="bold">
+          <Link to="/app/habits/new" alignSelf="center" color="primary.main" fontWeight="bold">
             Create a New habit
           </Link>
         )}

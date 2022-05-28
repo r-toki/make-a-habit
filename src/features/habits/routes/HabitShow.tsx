@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  chakra,
-  Heading,
-  Stack,
-  theme,
-  useMediaQuery,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, chakra, Heading, Stack, useMediaQuery, VStack } from '@chakra-ui/react';
 import { isValidMotionProp, motion, useAnimation } from 'framer-motion';
 import { FC, useEffect } from 'react';
 import { BiCheck } from 'react-icons/bi';
@@ -16,6 +7,7 @@ import { z } from 'zod';
 
 import { Form, TextareaField } from '@/components/Form';
 import { Layout } from '@/components/Layout';
+import { useAppTheme } from '@/providers/app';
 import { assertDefined } from '@/utils/assert-defined';
 
 import { useHabit } from '../hooks/useHabit';
@@ -29,6 +21,8 @@ const ChakraBox = chakra(motion.div, {
 });
 
 export const HabitShow: FC = () => {
+  const theme = useAppTheme();
+
   const { habitId } = useParams();
   assertDefined(habitId);
 
@@ -41,7 +35,9 @@ export const HabitShow: FC = () => {
 
     controls.start(
       {
-        backgroundColor: habit.hasDoneToday ? theme.colors.green[400] : theme.colors.gray[200],
+        backgroundColor: habit.hasDoneToday
+          ? theme.colors.primary.main
+          : theme.colors.secondary.main,
         scale: [1, 1.1, 1],
       },
       { duration: 1 }
