@@ -1,6 +1,5 @@
 import {
   Box,
-  Flex,
   Heading,
   HStack,
   Menu,
@@ -10,7 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { FC } from 'react';
-import { BiDotsVertical, BiTrash } from 'react-icons/bi';
+import { BiCircle, BiDotsVertical, BiRun, BiTrash } from 'react-icons/bi';
 
 import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
@@ -22,17 +21,17 @@ type HabitItemProps = { habit: HabitDoc; onRemove: () => void };
 
 const HabitItem: FC<HabitItemProps> = ({ habit, onRemove }) => {
   return (
-    <Flex justifyContent="space-between" alignItems="center">
+    <HStack spacing="4">
+      {habit.inProgress ? <BiRun fontSize="28px" /> : <BiCircle fontSize="28px" />}
+
       <Link to={`/app/habits/${habit.id}/histories`} flex="1">
-        <Box>
-          <Heading size="sm" whiteSpace="pre-wrap">
-            {habit.content}
-          </Heading>
-          <HStack>
-            <Box fontSize="sm">{formattedHabitPeriod(habit)}</Box>
-            {habit.inProgress && <Box fontSize="sm">(in progress)</Box>}
-          </HStack>
-        </Box>
+        <Heading size="sm" whiteSpace="pre-wrap">
+          {habit.content}
+        </Heading>
+        <HStack>
+          <Box fontSize="sm">{formattedHabitPeriod(habit)}</Box>
+          {habit.inProgress && <Box fontSize="sm">(in progress)</Box>}
+        </HStack>
       </Link>
 
       {!habit.inProgress && (
@@ -53,7 +52,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit, onRemove }) => {
           </Menu>
         </Box>
       )}
-    </Flex>
+    </HStack>
   );
 };
 

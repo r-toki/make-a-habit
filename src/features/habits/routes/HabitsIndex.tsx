@@ -30,14 +30,12 @@ const HabitItem: FC<HabitItemProps> = ({ habit, onGiveUp }) => {
         value={habit.progressPercent}
       />
 
-      <Box flex="1">
-        <Link to={`/app/habits/${habit.id}`}>
-          <Heading size="sm" whiteSpace="pre-wrap">
-            {habit.content}
-          </Heading>
-          <Box fontSize="sm">{formattedHabitPeriod(habit)}</Box>
-        </Link>
-      </Box>
+      <Link to={`/app/habits/${habit.id}`} flex="1">
+        <Heading size="sm" whiteSpace="pre-wrap">
+          {habit.content}
+        </Heading>
+        <Box fontSize="sm">{formattedHabitPeriod(habit)}</Box>
+      </Link>
 
       <Box>
         <Menu>

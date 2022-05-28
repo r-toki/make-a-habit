@@ -1,4 +1,4 @@
-import { Box, Heading, Stack, VStack } from '@chakra-ui/react';
+import { Box, Heading, Stack } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { FC } from 'react';
 import { BiCheck } from 'react-icons/bi';

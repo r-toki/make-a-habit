@@ -1,22 +1,8 @@
-import {
-  Box,
-  Breadcrumb,
-  BreadcrumbItem,
-  Button,
-  chakra,
-  Container,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  Stack,
-  useMediaQuery,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, chakra, Heading, Stack, useMediaQuery, VStack } from '@chakra-ui/react';
 import { isValidMotionProp, motion, useAnimation } from 'framer-motion';
 import { FC, useEffect } from 'react';
-import { BiArrowBack, BiCheck } from 'react-icons/bi';
-import { Link, useParams } from 'react-router-dom';
+import { BiCheck } from 'react-icons/bi';
+import { useParams } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form, TextareaField } from '@/components/Form';
