@@ -14,15 +14,22 @@ import { BiCircle, BiDotsVertical, BiRun, BiTrash } from 'react-icons/bi';
 import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
 import { formattedHabitPeriod, HabitDoc } from '@/fire/docs';
+import { useAppTheme } from '@/providers/app';
 
 import { useHabitsAll } from '../hooks';
 
 type HabitItemProps = { habit: HabitDoc; onRemove: () => void };
 
 const HabitItem: FC<HabitItemProps> = ({ habit, onRemove }) => {
+  const theme = useAppTheme();
+
   return (
     <HStack spacing="4">
-      {habit.inProgress ? <BiRun fontSize="28px" /> : <BiCircle fontSize="28px" />}
+      {habit.inProgress ? (
+        <BiRun fontSize="28px" color={theme.colors.primary.main} />
+      ) : (
+        <BiCircle fontSize="28px" />
+      )}
 
       <Link to={`/app/habits/${habit.id}/histories`} flex="1">
         <Heading size="sm" whiteSpace="pre-wrap">
