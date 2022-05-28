@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   HStack,
+  IconButton,
   Menu,
   MenuButton,
   MenuDivider,
@@ -13,17 +14,18 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
-import { BiCheck, BiHistory, BiLogOut, BiMenu, BiPlus } from 'react-icons/bi';
+import { BiArrowBack, BiCheck, BiHistory, BiLogOut, BiMenu, BiPlus } from 'react-icons/bi';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useLogOut } from '@/features/auth';
 
 type LayoutProps = {
   title: string;
+  backTo?: string | undefined;
   children: ReactNode;
 };
 
-export const Layout: FC<LayoutProps> = ({ title, children }) => {
+export const Layout: FC<LayoutProps> = ({ title, backTo, children }) => {
   const location = useLocation();
   const path = location.pathname.split('/').slice(1).join('/');
 
@@ -40,9 +42,23 @@ export const Layout: FC<LayoutProps> = ({ title, children }) => {
     <Stack h="full">
       <Box py="4" borderBottomWidth="1px">
         <Container>
-          <Center>
+          <Flex justifyContent="center" alignItems="center" position="relative">
             <Heading>{title}</Heading>
-          </Center>
+
+            {backTo && (
+              <IconButton
+                aria-label="back"
+                size="sm"
+                colorScheme="gray"
+                variant="ghost"
+                position="absolute"
+                left="0"
+                onClick={() => navigate(backTo)}
+              >
+                <BiArrowBack fontSize="20px" />
+              </IconButton>
+            )}
+          </Flex>
         </Container>
       </Box>
 

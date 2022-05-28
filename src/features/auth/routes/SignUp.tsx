@@ -82,9 +82,7 @@ export const SignUp: FC = () => {
 
               <Divider />
 
-              <Button type="submit" colorScheme="primary">
-                Sign Up
-              </Button>
+              <Button type="submit">Sign Up</Button>
             </Stack>
           )}
         </Form>

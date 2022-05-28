@@ -1,8 +1,22 @@
-import { Box, Button, chakra, Heading, Stack, useMediaQuery, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
+  chakra,
+  Container,
+  Flex,
+  Heading,
+  Icon,
+  IconButton,
+  Stack,
+  useMediaQuery,
+  VStack,
+} from '@chakra-ui/react';
 import { isValidMotionProp, motion, useAnimation } from 'framer-motion';
 import { FC, useEffect } from 'react';
-import { BiCheck } from 'react-icons/bi';
-import { useParams } from 'react-router-dom';
+import { BiArrowBack, BiCheck } from 'react-icons/bi';
+import { Link, useParams } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form, TextareaField } from '@/components/Form';
@@ -59,14 +73,12 @@ export const HabitShow: FC = () => {
   const [isLargerThan30em] = useMediaQuery('(min-width: 30em)');
 
   return (
-    <Layout title="Habits">
+    <Layout title="Habits" backTo="/app/habits">
       {habit ? (
         <VStack py={{ base: '2', md: '4' }} spacing={{ base: '4', md: '8' }}>
-          <VStack>
-            <Heading textAlign="center" whiteSpace="pre-wrap">
-              {habit.content}
-            </Heading>
-          </VStack>
+          <Heading textAlign="center" whiteSpace="pre-wrap">
+            {habit.content}
+          </Heading>
 
           <Box onClick={onToggleDone}>
             <ChakraBox h="xs" w="xs" rounded="full" position="relative" animate={controls}>

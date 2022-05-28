@@ -1,4 +1,4 @@
-import { Box, Stack } from '@chakra-ui/react';
+import { Box, Heading, Stack, VStack } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { FC } from 'react';
 import { BiCheck } from 'react-icons/bi';
@@ -49,12 +49,18 @@ export const HabitHistoriesIndex: FC = () => {
   const { habit } = useHabit(habitId);
 
   return (
-    <Layout title="Histories">
+    <Layout title="Histories" backTo="/app/habits/all">
       {habit ? (
         <Stack py="4" spacing="4">
-          {habit.displayedHistories.map((h) => (
-            <HistoryItem key={h.id} history={h} />
-          ))}
+          <Heading alignSelf="center" size="sm">
+            {habit.content}
+          </Heading>
+
+          <Stack spacing="4">
+            {habit.displayedHistories.map((h) => (
+              <HistoryItem key={h.id} history={h} />
+            ))}
+          </Stack>
         </Stack>
       ) : null}
     </Layout>

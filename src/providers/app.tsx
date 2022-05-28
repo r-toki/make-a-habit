@@ -23,6 +23,7 @@ const theme = extendTheme({
     },
   },
   components: {
+    Button: { defaultProps: { colorScheme: 'primary' } },
     Heading: { defaultProps: { size: 'md' } },
   },
 });
