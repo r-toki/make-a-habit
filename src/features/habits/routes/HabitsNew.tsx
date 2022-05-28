@@ -65,7 +65,7 @@ export const HabitsNew: FC = () => {
 
               <Divider />
 
-              <Button type="submit" colorScheme="green">
+              <Button type="submit" colorScheme="primary">
                 Start
               </Button>
             </Stack>

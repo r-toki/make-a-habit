@@ -56,7 +56,7 @@ export const LogIn: FC = () => {
 
               <Divider />
 
-              <Button type="submit" colorScheme="green">
+              <Button type="submit" colorScheme="primary">
                 Log In
               </Button>
             </Stack>
