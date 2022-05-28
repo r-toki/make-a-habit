@@ -31,11 +31,15 @@ export const useHabit = (habitId: string) => {
     setLoading(false);
   };
 
-  const doToday = () => mutate(() => habit?.doToday());
+  const toggleDone = () =>
+    mutate(async () => {
+      // TODO:
+    });
 
-  const undoToday = () => mutate(() => habit?.undoToday());
+  const doComment = (comment: string) =>
+    mutate(async () => {
+      // TODO:
+    });
 
-  const commentToday = (comment: string) => mutate(() => habit?.commentToday(comment));
-
-  return { loading, habit, doToday, undoToday, commentToday };
+  return { loading, habit, toggleDone, doComment };
 };

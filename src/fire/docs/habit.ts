@@ -15,24 +15,18 @@ import { Timestamp } from 'firebase/firestore';
 import { v4 } from 'uuid';
 
 import { Identity } from '@/lib/identity';
+import { insertEntity } from '@/utils/store-helper';
 
 import { HabitsCollection } from '../collections';
 
-export type History = {
-  id: string;
-  done: boolean;
-  comment: string;
-  createdAt: Timestamp;
-};
-
-export type HabitData = {
+export interface HabitData {
   content: string;
   targetDaysCount: number;
   startedAt: Timestamp;
   scheduledEndedAt: Timestamp;
   gaveUpAt: Timestamp | null;
-  histories: History[];
-};
+  histories: HistoryData[];
+}
 
 export interface HabitDoc extends HabitData {}
 export class HabitDoc extends FireDocument<HabitData> {
@@ -68,8 +62,8 @@ export class HabitDoc extends FireDocument<HabitData> {
     return isPast(this.scheduledEndedAt.toDate());
   }
 
-  get displayedHistories() {
-    const res: History[] = [];
+  get historiesWithBlankFilled() {
+    const res: HistoryData[] = [];
     let d = this.startedAt.toDate();
 
     while (
@@ -100,15 +94,6 @@ export class HabitDoc extends FireDocument<HabitData> {
     return !this.hasEnded && !this.gaveUpAt;
   }
 
-  private get defaultHistory(): History {
-    return {
-      id: v4(),
-      done: false,
-      comment: '',
-      createdAt: Timestamp.now(),
-    };
-  }
-
   static create(
     collection: HabitsCollection,
     { content, targetDaysCount }: Pick<HabitData, 'content' | 'targetDaysCount'>
@@ -134,60 +119,45 @@ export class HabitDoc extends FireDocument<HabitData> {
     return new HabitDoc({ id: this.id, ref: this.ref, data: () => this.data });
   }
 
-  doToday() {
-    if (this.hasDoneToday) return this;
-
-    const { todayHistory } = this;
-
-    if (todayHistory) {
-      return this.edit({
-        histories: this.histories.map((h) =>
-          h.id === todayHistory.id ? { ...todayHistory, done: true } : h
-        ),
-      });
-    }
-
-    return this.edit({ histories: this.histories.concat({ ...this.defaultHistory, done: true }) });
-  }
-
-  undoToday() {
-    if (!this.hasDoneToday) return this;
-
-    const { todayHistory } = this;
-
-    if (todayHistory) {
-      return this.edit({
-        histories: this.histories.map((h) =>
-          h.id === todayHistory.id ? { ...todayHistory, done: false } : h
-        ),
-      });
-    }
-
-    return this.edit({
-      histories: this.histories.concat({ ...this.defaultHistory }),
-    });
-  }
-
-  commentToday(comment: string) {
-    const { todayHistory } = this;
-
-    if (todayHistory) {
-      return this.edit({
-        histories: this.histories.map((h) =>
-          h.id === todayHistory.id ? { ...todayHistory, comment } : h
-        ),
-      });
-    }
-
-    return this.edit({
-      histories: this.histories.concat({ ...this.defaultHistory, comment }),
-    });
-  }
-
   giveUp() {
     return this.edit({
       gaveUpAt: Timestamp.now(),
     });
+  }
+
+  insertHistory(history: HistoryData) {
+    return this.edit({ histories: insertEntity(this.histories, history) });
+  }
+}
+
+interface HistoryData {
+  id: string;
+  done: boolean;
+  comment: string;
+  createdAt: Timestamp;
+}
+
+export interface History extends HistoryData {}
+export class History {
+  constructor(data: HistoryData) {
+    Object.assign(this, data);
+  }
+
+  get data() {
+    const { ...fields } = this;
+    return fields;
+  }
+
+  static create() {
+    return { id: v4(), done: false, comment: '', createdAt: Timestamp.now() };
+  }
+
+  toggleDone() {
+    return Object.assign(this, { done: !this.done });
+  }
+
+  doComment(comment: string) {
+    return Object.assign(this, { comment });
   }
 }
 

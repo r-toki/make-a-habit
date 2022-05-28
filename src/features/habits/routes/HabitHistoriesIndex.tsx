@@ -57,7 +57,7 @@ export const HabitHistoriesIndex: FC = () => {
           </Heading>
 
           <Stack spacing="4">
-            {habit.displayedHistories.map((h) => (
+            {habit.historiesWithBlankFilled.map((h) => (
               <HistoryItem key={h.id} history={h} />
             ))}
           </Stack>

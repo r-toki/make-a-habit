@@ -26,7 +26,7 @@ export const HabitShow: FC = () => {
   const { habitId } = useParams();
   assertDefined(habitId);
 
-  const { loading, habit, doToday, undoToday, commentToday } = useHabit(habitId);
+  const { loading, habit, toggleDone, doComment } = useHabit(habitId);
 
   const controls = useAnimation();
 
@@ -44,16 +44,11 @@ export const HabitShow: FC = () => {
 
   const onToggleDone = async () => {
     if (!habit) return;
-
-    if (habit.hasDoneToday) {
-      await undoToday();
-      return;
-    }
-    await doToday();
+    await toggleDone();
   };
 
   const onComment = async ({ comment }: { comment: string }) => {
-    await commentToday(comment);
+    await doComment(comment);
   };
 
   const [isLargerThan30em] = useMediaQuery('(min-width: 30em)');
