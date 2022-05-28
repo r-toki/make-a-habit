@@ -25,7 +25,7 @@ export interface HabitData {
   startedAt: Timestamp;
   scheduledEndedAt: Timestamp;
   gaveUpAt: Timestamp | null;
-  histories: HistoryData[];
+  habitRecords: HabitRecordData[];
 }
 
 export interface HabitDoc extends HabitData {}
@@ -50,20 +50,20 @@ export class HabitDoc extends FireDocument<HabitData> {
     return ratio * 100;
   }
 
-  get hasDoneToday() {
-    return this.histories.some((h) => isToday(h.createdAt.toDate()) && h.done);
+  get todayHabitRecord() {
+    return this.habitRecords.find((h) => isToday(h.createdAt.toDate()));
   }
 
-  get todayHistory() {
-    return this.histories.find((h) => isToday(h.createdAt.toDate()));
+  get hasDoneToday() {
+    return !!this.todayHabitRecord?.done;
   }
 
   get hasEnded() {
     return isPast(this.scheduledEndedAt.toDate());
   }
 
-  get historiesWithBlankFilled() {
-    const res: HistoryData[] = [];
+  get habitRecordsWithBlankFilled() {
+    const res: HabitRecordData[] = [];
     let d = this.startedAt.toDate();
 
     while (
@@ -76,10 +76,10 @@ export class HabitDoc extends FireDocument<HabitData> {
           : new Date()
       )
     ) {
-      const history = this.histories.find((h) => isSameDay(h.createdAt.toDate(), d));
+      const habitRecord = this.habitRecords.find((h) => isSameDay(h.createdAt.toDate(), d));
 
-      if (history) {
-        res.push(history);
+      if (habitRecord) {
+        res.push(habitRecord);
       } else {
         res.push({ id: v4(), done: false, comment: '', createdAt: Timestamp.fromDate(d) });
       }
@@ -110,7 +110,7 @@ export class HabitDoc extends FireDocument<HabitData> {
         startedAt: Timestamp.fromDate(startOfToday()),
         scheduledEndedAt,
         gaveUpAt: null,
-        histories: [],
+        habitRecords: [],
       })
     );
   }
@@ -125,21 +125,21 @@ export class HabitDoc extends FireDocument<HabitData> {
     });
   }
 
-  insertHistory(history: HistoryData) {
-    return this.edit({ histories: insertEntity(this.histories, history) });
+  insertHabitRecord(habitRecord: HabitRecordData) {
+    return this.edit({ habitRecords: insertEntity(this.habitRecords, habitRecord) });
   }
 }
 
-interface HistoryData {
+export interface HabitRecordData {
   id: string;
   done: boolean;
   comment: string;
   createdAt: Timestamp;
 }
 
-export interface History extends HistoryData {}
-export class History {
-  constructor(data: HistoryData) {
+export interface HabitRecord extends HabitRecordData {}
+export class HabitRecord {
+  constructor(data: HabitRecordData) {
     Object.assign(this, data);
   }
 
@@ -149,10 +149,13 @@ export class History {
   }
 
   static create() {
-    return { id: v4(), done: false, comment: '', createdAt: Timestamp.now() };
+    return new HabitRecord({ id: v4(), done: false, comment: '', createdAt: Timestamp.now() });
   }
 
-  toggleDone() {
+  toggleDone(done?: boolean | undefined) {
+    if (typeof done === 'boolean') {
+      return Object.assign(this, { done });
+    }
     return Object.assign(this, { done: !this.done });
   }
 

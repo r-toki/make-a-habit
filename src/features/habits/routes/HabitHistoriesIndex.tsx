@@ -5,23 +5,23 @@ import { BiCheck } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout';
-import { History } from '@/fire/docs/habit';
+import { HabitRecordData } from '@/fire/docs';
 import { assertDefined } from '@/utils/assert-defined';
 
 import { useHabit } from '../hooks';
 
 const formattedDay = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
 
-type HistoryItemProps = { history: History };
+type HabitRecordItemProps = { habitRecord: HabitRecordData };
 
-const HistoryItem: FC<HistoryItemProps> = ({ history }) => {
+const HabitRecordItem: FC<HabitRecordItemProps> = ({ habitRecord }) => {
   return (
     <Stack direction="row" spacing={{ base: '2', md: '4' }}>
       <Box
         h="14"
         w="14"
         rounded="full"
-        bg={history.done ? 'primary.main' : 'primary.100'}
+        bg={habitRecord.done ? 'primary.main' : 'primary.100'}
         flexShrink="0"
         position="relative"
       >
@@ -31,11 +31,11 @@ const HistoryItem: FC<HistoryItemProps> = ({ history }) => {
       </Box>
       <Box>
         <Box fontSize="sm" color="gray.500">
-          {format(history.createdAt.toDate(), 'MM/dd')}{' '}
-          {formattedDay[history.createdAt.toDate().getDay()]}
+          {format(habitRecord.createdAt.toDate(), 'MM/dd')}{' '}
+          {formattedDay[habitRecord.createdAt.toDate().getDay()]}
         </Box>
         <Box fontSize="sm" whiteSpace="pre-wrap">
-          {history.comment}
+          {habitRecord.comment}
         </Box>
       </Box>
     </Stack>
@@ -57,8 +57,8 @@ export const HabitHistoriesIndex: FC = () => {
           </Heading>
 
           <Stack spacing="4">
-            {habit.historiesWithBlankFilled.map((h) => (
-              <HistoryItem key={h.id} history={h} />
+            {habit.habitRecords.map((h) => (
+              <HabitRecordItem key={h.id} habitRecord={h} />
             ))}
           </Stack>
         </Stack>
