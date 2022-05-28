@@ -1,8 +1,7 @@
 import { FireDocument } from 'fire-hose-web';
 import { collection, Timestamp } from 'firebase/firestore';
 
-import { UsersCollection } from '../collections';
-import { HabitsCollection } from '../collections/habits';
+import { HabitsCollection, UsersCollection } from '../collections';
 
 export type UserData = { name: string; createdAt: Timestamp; updatedAt: Timestamp };
 

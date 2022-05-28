@@ -14,7 +14,7 @@ import { BiDotsVertical, BiShocked } from 'react-icons/bi';
 
 import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
-import { HabitDoc } from '@/fire/docs';
+import { formattedPeriod, HabitDoc } from '@/fire/docs';
 
 import { useHabits } from '../hooks/useHabits';
 
@@ -34,7 +34,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit, onGiveUp }) => {
           <Heading size="sm" whiteSpace="pre-wrap">
             {habit.content}
           </Heading>
-          <Box fontSize="sm"> {habit.formattedPeriod}</Box>
+          <Box fontSize="sm">{formattedPeriod(habit)}</Box>
         </Link>
       </Box>
 

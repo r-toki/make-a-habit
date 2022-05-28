@@ -1,11 +1,13 @@
 import {
   addDays,
   differenceInCalendarDays,
-  endOfDay,
+  endOfToday,
+  format,
   isBefore,
   isPast,
   isSameDay,
   isToday,
+  startOfToday,
   subDays,
 } from 'date-fns';
 import { FireDocument } from 'fire-hose-web';
@@ -13,9 +15,8 @@ import { Timestamp } from 'firebase/firestore';
 import { v4 } from 'uuid';
 
 import { Identity } from '@/lib/identity';
-import { formatDate } from '@/utils/format';
 
-import { HabitsCollection } from '../collections/habits';
+import { HabitsCollection } from '../collections';
 
 export type History = {
   id: string;
@@ -35,10 +36,6 @@ export type HabitData = {
 
 export interface HabitDoc extends HabitData {}
 export class HabitDoc extends FireDocument<HabitData> {
-  get formattedPeriod() {
-    return `${formatDate(this.startedAt)} ~ ${formatDate(this.scheduledEndedAt)}`;
-  }
-
   get progressPercent() {
     if (this.gaveUpAt) {
       const ratio =
@@ -53,7 +50,7 @@ export class HabitDoc extends FireDocument<HabitData> {
     }
 
     const ratio =
-      (differenceInCalendarDays(endOfDay(new Date()), this.startedAt.toDate()) + 1) /
+      (differenceInCalendarDays(new Date(), this.startedAt.toDate()) + 1) /
       (differenceInCalendarDays(this.scheduledEndedAt.toDate(), this.startedAt.toDate()) + 1);
 
     return ratio * 100;
@@ -82,7 +79,7 @@ export class HabitDoc extends FireDocument<HabitData> {
           ? this.gaveUpAt.toDate()
           : this.hasEnded
           ? this.scheduledEndedAt.toDate()
-          : endOfDay(new Date())
+          : new Date()
       )
     ) {
       const history = this.histories.find((h) => isSameDay(h.createdAt.toDate(), d));
@@ -103,21 +100,29 @@ export class HabitDoc extends FireDocument<HabitData> {
     return !this.hasEnded && !this.gaveUpAt;
   }
 
+  private get defaultHistory(): History {
+    return {
+      id: v4(),
+      done: false,
+      comment: '',
+      createdAt: Timestamp.now(),
+    };
+  }
+
   static create(
     collection: HabitsCollection,
     { content, targetDaysCount }: Pick<HabitData, 'content' | 'targetDaysCount'>
   ) {
-    const scheduledEndedAt = Identity.of(new Date())
+    const scheduledEndedAt = Identity.of(endOfToday())
       .map((d) => addDays(d, targetDaysCount))
       .map((d) => subDays(d, 1))
-      .map(endOfDay)
       .map(Timestamp.fromDate).value;
 
     return new HabitDoc(
       this.makeConstructorInput(collection, null, {
         content,
         targetDaysCount,
-        startedAt: Timestamp.now(),
+        startedAt: Timestamp.fromDate(startOfToday()),
         scheduledEndedAt,
         gaveUpAt: null,
         histories: [],
@@ -135,19 +140,14 @@ export class HabitDoc extends FireDocument<HabitData> {
     const { todayHistory } = this;
 
     if (todayHistory) {
-      const histories = this.histories.map((h) =>
-        h.id === todayHistory.id ? { ...todayHistory, done: true } : h
-      );
-      return this.edit({ histories });
+      return this.edit({
+        histories: this.histories.map((h) =>
+          h.id === todayHistory.id ? { ...todayHistory, done: true } : h
+        ),
+      });
     }
 
-    const histories = this.histories.concat({
-      id: v4(),
-      done: true,
-      comment: '',
-      createdAt: Timestamp.now(),
-    });
-    return this.edit({ histories });
+    return this.edit({ histories: this.histories.concat({ ...this.defaultHistory, done: true }) });
   }
 
   undoToday() {
@@ -156,38 +156,32 @@ export class HabitDoc extends FireDocument<HabitData> {
     const { todayHistory } = this;
 
     if (todayHistory) {
-      const histories = this.histories.map((h) =>
-        h.id === todayHistory.id ? { ...todayHistory, done: false } : h
-      );
-      return this.edit({ histories });
+      return this.edit({
+        histories: this.histories.map((h) =>
+          h.id === todayHistory.id ? { ...todayHistory, done: false } : h
+        ),
+      });
     }
 
-    const histories = this.histories.concat({
-      id: v4(),
-      done: false,
-      comment: '',
-      createdAt: Timestamp.now(),
+    return this.edit({
+      histories: this.histories.concat({ ...this.defaultHistory }),
     });
-    return this.edit({ histories });
   }
 
   commentToday(comment: string) {
     const { todayHistory } = this;
 
     if (todayHistory) {
-      const histories = this.histories.map((h) =>
-        h.id === todayHistory.id ? { ...todayHistory, comment } : h
-      );
-      return this.edit({ histories });
+      return this.edit({
+        histories: this.histories.map((h) =>
+          h.id === todayHistory.id ? { ...todayHistory, comment } : h
+        ),
+      });
     }
 
-    const histories = this.histories.concat({
-      id: v4(),
-      done: false,
-      comment,
-      createdAt: Timestamp.now(),
+    return this.edit({
+      histories: this.histories.concat({ ...this.defaultHistory, comment }),
     });
-    return this.edit({ histories });
   }
 
   giveUp() {
@@ -196,3 +190,9 @@ export class HabitDoc extends FireDocument<HabitData> {
     });
   }
 }
+
+// NOTE: for View
+export const formattedPeriod = (habit: HabitDoc) => {
+  const f = (ts: Timestamp) => format(ts.toDate(), 'yyyy/MM/dd');
+  return `${f(habit.startedAt)} ~ ${f(habit.scheduledEndedAt)}`;
+};

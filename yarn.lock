@@ -2346,10 +2346,10 @@ find-root@^1.1.0:
   resolved "https://registry.yarnpkg.com/find-root/-/find-root-1.1.0.tgz#abcfc8ba76f708c42a97b3d685b7e9450bfb9ce4"
   integrity sha512-NKfW6bec6GfKc0SGx1e07QZY9PE99u0Bft/0rzSD5k3sO/vwkVUpDUKVm5Gpp5Ue3YfShPFTX2070tDs5kB9Ng==
 
-fire-hose-web@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/fire-hose-web/-/fire-hose-web-1.0.1.tgz#7f095d654106f6ffedfa91f9e40b8f660dbbd1c3"
-  integrity sha512-gIvWC90guB6JRhQ1t1BBrZTQW8vjIVSdkLSLlMWJolnG0zBabrJfOEjGy7yPmiMubYUsMg7HRmRbO45mi1FsoA==
+fire-hose-web@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/fire-hose-web/-/fire-hose-web-1.0.2.tgz#57375d31a71ab810c9bc5b4b33b035268cc70dc6"
+  integrity sha512-KEOYe1envzEqhVrn5CP4ei1lM8K2xY/GgVLeiQlT1PaQ837SUmlzbfkxsZ2UOXKjg6hydiKNf+5U150xvTbajQ==
   dependencies:
     firebase "^9.8.1"
 
