@@ -192,7 +192,7 @@ export class HabitDoc extends FireDocument<HabitData> {
 }
 
 // NOTE: for View
-export const formattedPeriod = (habit: HabitDoc) => {
+export const formattedHabitPeriod = (habit: HabitDoc) => {
   const f = (ts: Timestamp) => format(ts.toDate(), 'yyyy/MM/dd');
   return `${f(habit.startedAt)} ~ ${f(habit.scheduledEndedAt)}`;
 };

@@ -14,7 +14,7 @@ import { BiDotsVertical, BiTrash } from 'react-icons/bi';
 
 import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
-import { formattedPeriod, HabitDoc } from '@/fire/docs';
+import { formattedHabitPeriod, HabitDoc } from '@/fire/docs';
 
 import { useHabitsAll } from '../hooks';
 
@@ -29,7 +29,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit, onRemove }) => {
             {habit.content}
           </Heading>
           <HStack>
-            <Box fontSize="sm">{formattedPeriod(habit)}</Box>
+            <Box fontSize="sm">{formattedHabitPeriod(habit)}</Box>
             {habit.inProgress && <Box fontSize="sm">(in progress)</Box>}
           </HStack>
         </Box>
