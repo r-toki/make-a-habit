@@ -48,18 +48,18 @@ export const HabitShow: FC = () => {
     );
   }, [habit]);
 
-  const onToggleDone = () => {
+  const onToggleDone = async () => {
     if (!habit) return;
 
     if (habit.hasDoneToday) {
-      undoToday();
+      await undoToday();
       return;
     }
-    doToday();
+    await doToday();
   };
 
-  const onComment = ({ comment }: { comment: string }) => {
-    commentToday(comment);
+  const onComment = async ({ comment }: { comment: string }) => {
+    await commentToday(comment);
   };
 
   const [isLargerThan30em] = useMediaQuery('(min-width: 30em)');

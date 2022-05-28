@@ -19,41 +19,23 @@ export const useHabit = (habitId: string) => {
       .then(() => setLoading(false));
   }, [habitId]);
 
-  const doToday = async () => {
+  const mutate = async (cb: () => void) => {
     if (!habit || loading) return;
 
     setLoading(true);
 
-    habit.doToday();
+    cb();
     await habit.save();
     setHabit(habit.rebuild());
 
     setLoading(false);
   };
 
-  const undoToday = async () => {
-    if (!habit || loading) return;
+  const doToday = () => mutate(() => habit?.doToday());
 
-    setLoading(true);
+  const undoToday = () => mutate(() => habit?.undoToday());
 
-    habit.undoToday();
-    await habit.save();
-    setHabit(habit.rebuild());
-
-    setLoading(false);
-  };
-
-  const commentToday = async (comment: string) => {
-    if (!habit || loading) return;
-
-    setLoading(true);
-
-    habit.commentToday(comment);
-    await habit.save();
-    setHabit(habit.rebuild());
-
-    setLoading(false);
-  };
+  const commentToday = (comment: string) => mutate(() => habit?.commentToday(comment));
 
   return { loading, habit, doToday, undoToday, commentToday };
 };
