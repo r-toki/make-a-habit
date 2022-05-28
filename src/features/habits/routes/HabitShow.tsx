@@ -35,9 +35,7 @@ export const HabitShow: FC = () => {
 
     controls.start(
       {
-        backgroundColor: habit.hasDoneToday
-          ? theme.colors.primary.main
-          : theme.colors.secondary.main,
+        backgroundColor: habit.hasDoneToday ? theme.colors.primary.main : theme.colors.primary[100],
         scale: [1, 1.1, 1],
       },
       { duration: 1 }

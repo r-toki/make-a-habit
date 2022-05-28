@@ -25,7 +25,8 @@ const HabitItem: FC<HabitItemProps> = ({ habit, onGiveUp }) => {
     <HStack spacing={{ base: '2', md: '4' }}>
       <CircularProgress
         size="64px"
-        color={habit.hasDoneToday ? 'primary.main' : 'secondary.700'}
+        stroke="black"
+        color={habit.hasDoneToday ? 'primary.main' : 'blackAlpha.500'}
         value={habit.progressPercent}
       />
 

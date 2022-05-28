@@ -21,7 +21,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ history }) => {
         h="14"
         w="14"
         rounded="full"
-        bg={history.done ? 'primary.main' : 'secondary.main'}
+        bg={history.done ? 'primary.main' : 'primary.100'}
         flexShrink="0"
         position="relative"
       >
