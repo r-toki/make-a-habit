@@ -16,8 +16,8 @@ type CheckboxGroupFieldProps = FieldWrapperPassThroughProps & {
 
 export const CheckboxGroupField: FC<CheckboxGroupFieldProps> = ({
   label,
-  options,
   error,
+  options,
   registration,
 }) => {
   return (

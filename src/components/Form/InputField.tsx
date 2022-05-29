@@ -9,10 +9,10 @@ type InputFieldProps = FieldWrapperPassThroughProps & {
 } & InputProps;
 
 export const InputField = ({
-  type = 'text',
   label,
-  registration,
   error,
+  type = 'text',
+  registration,
   ...rest
 }: InputFieldProps) => {
   return (

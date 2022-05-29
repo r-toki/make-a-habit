@@ -17,8 +17,8 @@ type RadioGroupFieldProps = FieldWrapperPassThroughProps & {
 
 export const RadioGroupField: FC<RadioGroupFieldProps> = ({
   label,
-  options,
   error,
+  options,
   registration,
   defaultValue,
 }) => {

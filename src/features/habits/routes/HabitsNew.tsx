@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { Form } from '@/components/Form';
 import { TextareaField } from '@/components/Form';
-import { RadioGroupField } from '@/components/Form';
+import { SelectField } from '@/components/Form';
 import { Layout } from '@/components/Layout';
 
 import { useCreateHabit } from '../hooks';
@@ -40,19 +40,20 @@ export const HabitsNew: FC = () => {
     <Layout title="Create a New Habit">
       <Box py="4">
         <Form<RegisterValues, typeof schema> onSubmit={onCreateHabit} schema={schema}>
-          {({ register, formState }) => (
+          {({ register, formState, control }) => (
             <Stack spacing="6">
               <Stack spacing="4">
                 <TextareaField
                   label="content"
-                  registration={register('content')}
                   error={formState.errors.content}
+                  registration={register('content')}
                 />
 
-                <RadioGroupField
+                <SelectField
                   label="days"
-                  registration={register('targetDaysCount')}
                   error={formState.errors.targetDaysCount}
+                  name="targetDaysCount"
+                  control={control}
                   options={[
                     { label: '1 day', value: '1' },
                     { label: '3 days', value: '3' },
