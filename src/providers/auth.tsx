@@ -17,8 +17,11 @@ const useAuthProvider = () => {
       else setState({ initialized: true, user: undefined });
 
       console.log('[make-a-habit] --- auth log ---');
-      console.log('[make-a-habit] email', authUser?.email);
-      console.log('[make-a-habit] verified', authUser?.emailVerified);
+      console.log('[make-a-habit]', authUser?.email);
+      console.log(
+        '[make-a-habit]',
+        authUser?.emailVerified ? 'email is verified' : 'email is not verified'
+      );
     });
   }, []);
 

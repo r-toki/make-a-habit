@@ -1,4 +1,9 @@
-import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  sendEmailVerification,
+  signOut,
+} from 'firebase/auth';
 
 import { usersCollection } from '@/fire/app';
 import { UserDoc } from '@/fire/docs/user';
@@ -16,10 +21,11 @@ export const useSignUp = () => {
     const { user: authUser } = await createUserWithEmailAndPassword(getAuth(), email, password);
     await UserDoc.create(usersCollection, authUser.uid, { name }).save();
 
+    await signOut(getAuth());
     await sendEmailVerification(authUser, {
       url: import.meta.env.PROD
-        ? 'https://a-habit.web.app/app/habits'
-        : 'http://localhost:3000/app/habits',
+        ? 'https://a-habit.web.app/auth/log-in'
+        : 'http://localhost:3000/auth/log-in',
       handleCodeInApp: true,
     });
   };
