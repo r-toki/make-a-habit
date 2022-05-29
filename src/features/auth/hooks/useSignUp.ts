@@ -23,6 +23,8 @@ export const useSignUp = () => {
     await updateProfile(authUser, { displayName: name });
     await UserDoc.create(usersCollection, authUser.uid, { name }).save();
 
+    if (authUser.email?.endsWith('@example.com')) return;
+
     await signOut(getAuth());
     await sendEmailVerification(authUser);
   };

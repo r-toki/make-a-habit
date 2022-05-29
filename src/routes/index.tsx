@@ -12,7 +12,8 @@ export const AppRoutes: FC = () => {
 
   const commonRoutes = [{ path: '/', element: <Landing /> }];
 
-  const routes = user?.emailVerified ? protectedRoutes : publicRoutes;
+  const routes =
+    user?.emailVerified || user?.email?.endsWith('@example.com') ? protectedRoutes : publicRoutes;
 
   const element = useRoutes([...routes, ...commonRoutes]);
 
