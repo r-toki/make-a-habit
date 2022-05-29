@@ -18,7 +18,7 @@ import { useSignUp } from '../hooks';
 const schema = z
   .object({
     email: z.string().min(1, 'Required'),
-    password: z.string().min(1, 'Required'),
+    password: z.string().min(1, 'Required').min(7, 'Password must be over 7 characters'),
     confirm: z.string().min(1, 'Required'),
     name: z.string().min(1, 'Required'),
   })

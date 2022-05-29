@@ -3,6 +3,7 @@ import {
   getAuth,
   sendEmailVerification,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 
 import { usersCollection } from '@/fire/app';
@@ -19,6 +20,7 @@ export const useSignUp = () => {
     password: string;
   }) => {
     const { user: authUser } = await createUserWithEmailAndPassword(getAuth(), email, password);
+    await updateProfile(authUser, { displayName: name });
     await UserDoc.create(usersCollection, authUser.uid, { name }).save();
 
     await signOut(getAuth());
