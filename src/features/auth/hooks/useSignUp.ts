@@ -22,12 +22,7 @@ export const useSignUp = () => {
     await UserDoc.create(usersCollection, authUser.uid, { name }).save();
 
     await signOut(getAuth());
-    await sendEmailVerification(authUser, {
-      url: import.meta.env.PROD
-        ? 'https://a-habit.web.app/auth/log-in'
-        : 'http://localhost:3000/auth/log-in',
-      handleCodeInApp: true,
-    });
+    await sendEmailVerification(authUser);
   };
   return { signUp };
 };

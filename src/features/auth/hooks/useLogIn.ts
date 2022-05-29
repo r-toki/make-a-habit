@@ -6,12 +6,7 @@ export const useLogIn = () => {
     if (authUser.emailVerified) return true;
 
     await signOut(getAuth());
-    await sendEmailVerification(authUser, {
-      url: import.meta.env.PROD
-        ? 'https://a-habit.web.app/app/habits'
-        : 'http://localhost:3000/app/habits',
-      handleCodeInApp: true,
-    });
+    await sendEmailVerification(authUser);
     return false;
   };
 
