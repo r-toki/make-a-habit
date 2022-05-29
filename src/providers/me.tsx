@@ -9,13 +9,13 @@ import { useAuth } from './auth';
 type State = UserDoc;
 
 const useMeProvider = () => {
-  const { uid } = useAuth();
-  assertDefined(uid);
+  const { user } = useAuth();
+  assertDefined(user);
 
   const [state, setState] = useState<State>();
 
   useEffect(() => {
-    usersCollection.findOne(uid).then(setState);
+    usersCollection.findOne(user.uid).then(setState);
   }, []);
 
   return state;

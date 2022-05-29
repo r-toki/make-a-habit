@@ -1,4 +1,4 @@
-import { Button, Center, Container, Divider, Heading, Stack } from '@chakra-ui/react';
+import { Button, Center, Container, Divider, Heading, Stack, useToast } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
@@ -21,11 +21,21 @@ type RegisterValues = {
 export const LogIn: FC = () => {
   const navigate = useNavigate();
 
+  const toast = useToast();
+
   const { logIn } = useLogIn();
 
   const onLogIn = async ({ email, password }: RegisterValues) => {
-    await logIn({ email, password });
-    navigate('/app/habits');
+    const success = await logIn({ email, password });
+    if (success) {
+      navigate('/app/habits');
+    } else {
+      toast({
+        status: 'info',
+        position: 'top-right',
+        title: 'Sent verification email.',
+      });
+    }
   };
 
   return (

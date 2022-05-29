@@ -1,6 +1,5 @@
-import { Button, Center, Container, Divider, Heading, Stack } from '@chakra-ui/react';
+import { Button, Center, Container, Divider, Heading, Stack, useToast } from '@chakra-ui/react';
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form, InputField } from '../../../components/Form';
@@ -27,7 +26,7 @@ type RegisterValues = {
 };
 
 export const SignUp: FC = () => {
-  const navigate = useNavigate();
+  const toast = useToast();
 
   const { signUp } = useSignUp();
 
@@ -37,7 +36,11 @@ export const SignUp: FC = () => {
     password,
   }: Pick<RegisterValues, 'name' | 'email' | 'password'>) => {
     await signUp({ name, email, password });
-    navigate('/app/habits');
+    toast({
+      status: 'info',
+      position: 'top-right',
+      title: 'Sent verification email.',
+    });
   };
 
   return (

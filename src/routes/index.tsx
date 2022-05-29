@@ -8,11 +8,11 @@ import { protectedRoutes } from './protected';
 import { publicRoutes } from './public';
 
 export const AppRoutes: FC = () => {
-  const { uid } = useAuth();
+  const { user } = useAuth();
 
   const commonRoutes = [{ path: '/', element: <Landing /> }];
 
-  const routes = uid ? protectedRoutes : publicRoutes;
+  const routes = user?.emailVerified ? protectedRoutes : publicRoutes;
 
   const element = useRoutes([...routes, ...commonRoutes]);
 

@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/providers/auth';
 
 export const Landing = () => {
-  const { uid } = useAuth();
+  const { user } = useAuth();
 
-  if (uid) return <Navigate to="/app/habits" />;
+  if (user) return <Navigate to="/app/habits" />;
   return <Navigate to="/auth/log-in" />;
 };
