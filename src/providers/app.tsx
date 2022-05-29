@@ -7,19 +7,14 @@ import { AuthProvider } from './auth';
 const theme = extendTheme({
   // NOTE: https://colorhunt.co
   //       https://maketintsandshades.com
+  //       color scale 参考値
+  //       50: 90, 100: 80, 200: 60, 300: 40, 400: 20
+  //       600: 10, 700: 30, 800: 50, 900: 70
   colors: {
     primary: {
-      main: '#f38181',
-      50: '#fef2f2', // 90
-      100: '#fde6e6', // 80
-      200: '#facdcd', // 60
-      300: '#f8b3b3', // 40
-      400: '#f59a9a', // 20
-      500: '#f38181',
-      600: '#db7474', // 10
-      700: '#aa5a5a', // 30
-      800: '#7a4141', // 50
-      900: '#492727', // 70
+      main: '#9adcff',
+      100: '#ebf8ff',
+      500: '#9adcff',
     },
   },
   components: {
