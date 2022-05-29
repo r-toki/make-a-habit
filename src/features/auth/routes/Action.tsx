@@ -1,5 +1,5 @@
 import { Button, Center, Container, Divider, Heading, Stack, useToast } from '@chakra-ui/react';
-import { FC, useEffect } from 'react';
+import { FC, Fragment, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
 
@@ -8,10 +8,9 @@ import { assertDefined } from '@/utils/assert-defined';
 
 import { useAuthAction } from '../hooks';
 
-const useVerifyEmail = () => {
+const VerifyEmail: FC = () => {
   const [searchParams] = useSearchParams();
 
-  const mode = searchParams.get('mode');
   const oobCode = searchParams.get('oobCode');
 
   const navigate = useNavigate();
@@ -33,9 +32,10 @@ const useVerifyEmail = () => {
   };
 
   useEffect(() => {
-    // TODO: 開発環境だとなぜか2回呼ばれる
-    if (mode === 'verifyEmail') onVerifyEmail();
+    onVerifyEmail();
   }, []);
+
+  return <Fragment />;
 };
 
 const schema = z
@@ -111,8 +111,6 @@ export const Action: FC = () => {
 
   const mode = searchParams.get('mode');
 
-  useVerifyEmail();
-
   return (
     <Container maxW="lg" py="4">
       <Stack spacing="4">
@@ -120,6 +118,7 @@ export const Action: FC = () => {
           <Heading>Make a Habit!</Heading>
         </Center>
 
+        {mode === 'verifyEmail' && <VerifyEmail />}
         {mode === 'resetPassword' && <PasswordResetForm />}
       </Stack>
     </Container>
