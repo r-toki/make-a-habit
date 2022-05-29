@@ -12,9 +12,9 @@ const theme = extendTheme({
   //       600: 10, 700: 30, 800: 50, 900: 70
   colors: {
     primary: {
-      main: '#9adcff',
-      100: '#ebf8ff',
-      500: '#9adcff',
+      main: '#6fb2d2',
+      100: '#e2f0f6',
+      500: '#6fb2d2',
     },
   },
   components: {
