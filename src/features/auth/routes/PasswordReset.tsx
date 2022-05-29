@@ -9,42 +9,33 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Form, InputField } from '@/components/Form';
 import { Link } from '@/components/Link';
 
-import { useLogIn } from '../hooks';
+import { useResetPassword } from '../hooks';
 
 const schema = z.object({
   email: z.string().min(1, 'Required'),
-  password: z.string().min(1, 'Required'),
 });
 
 type RegisterValues = {
   email: string;
-  password: string;
 };
 
-export const LogIn: FC = () => {
-  const navigate = useNavigate();
-
+export const ResetPassword: FC = () => {
   const toast = useToast();
 
-  const { logIn } = useLogIn();
+  const { resetPassword } = useResetPassword();
 
-  const onLogIn = async ({ email, password }: RegisterValues) => {
-    const success = await logIn({ email, password });
-    if (success) {
-      navigate('/app/habits');
-    } else {
-      toast({
-        status: 'info',
-        position: 'top-right',
-        title: 'Sent email to verify.',
-      });
-    }
+  const onResetPassword = async ({ email }: RegisterValues) => {
+    await resetPassword(email);
+    toast({
+      status: 'info',
+      position: 'top-right',
+      title: 'Sent email to reset password.',
+    });
   };
 
   return (
@@ -54,7 +45,7 @@ export const LogIn: FC = () => {
           <Heading>Make a Habit!</Heading>
         </Center>
 
-        <Form<RegisterValues, typeof schema> onSubmit={onLogIn} schema={schema}>
+        <Form<RegisterValues, typeof schema> onSubmit={onResetPassword} schema={schema}>
           {({ register, formState }) => (
             <Stack spacing="6">
               <Stack spacing="4">
@@ -64,19 +55,11 @@ export const LogIn: FC = () => {
                   registration={register('email')}
                   error={formState.errors.email}
                 />
-
-                <InputField
-                  type="password"
-                  label="password"
-                  registration={register('password')}
-                  error={formState.errors.password}
-                  autoComplete="on"
-                />
               </Stack>
 
               <Divider />
 
-              <Button type="submit">Log In</Button>
+              <Button type="submit">Reset Password</Button>
             </Stack>
           )}
         </Form>
@@ -85,8 +68,8 @@ export const LogIn: FC = () => {
           <Link display="block" to="/auth/sign-up">
             to Sign Up
           </Link>
-          <Link display="block" to="/auth/reset-password">
-            to Reset Password
+          <Link display="block" to="/auth/log-in">
+            to Log In
           </Link>
         </Box>
       </Stack>

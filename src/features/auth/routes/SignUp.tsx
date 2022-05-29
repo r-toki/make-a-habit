@@ -1,4 +1,13 @@
-import { Button, Center, Container, Divider, Heading, Stack, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Divider,
+  Heading,
+  Stack,
+  useToast,
+} from '@chakra-ui/react';
 import { FC } from 'react';
 import { z } from 'zod';
 
@@ -39,7 +48,7 @@ export const SignUp: FC = () => {
     toast({
       status: 'info',
       position: 'top-right',
-      title: 'Sent verification email.',
+      title: 'Sent email to verify.',
     });
   };
 
@@ -61,6 +70,7 @@ export const SignUp: FC = () => {
                 />
 
                 <InputField
+                  type="email"
                   label="email"
                   registration={register('email')}
                   error={formState.errors.email}
@@ -90,9 +100,14 @@ export const SignUp: FC = () => {
           )}
         </Form>
 
-        <Link alignSelf="start" to="/auth/log-in">
-          to Log In
-        </Link>
+        <Box>
+          <Link display="block" to="/auth/log-in">
+            to Log In
+          </Link>
+          <Link display="block" to="/auth/reset-password">
+            to Reset Password
+          </Link>
+        </Box>
       </Stack>
     </Container>
   );
