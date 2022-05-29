@@ -11,6 +11,7 @@ import {
   MenuItem,
   MenuList,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 import { BiArrowBack, BiCheck, BiHistory, BiLogOut, BiMenu, BiPlus } from 'react-icons/bi';
@@ -30,10 +31,13 @@ export const Layout: FC<LayoutProps> = ({ title, backTo, children }) => {
 
   const navigate = useNavigate();
 
+  const toast = useToast();
+
   const { logOut } = useLogOut();
 
   const onLogOut = async () => {
     await logOut();
+    toast({ status: 'success', position: 'top-right', title: 'Log out.' });
     navigate('/auth/log-in');
   };
 

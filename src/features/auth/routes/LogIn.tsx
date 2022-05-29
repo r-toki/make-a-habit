@@ -37,6 +37,7 @@ export const LogIn: FC = () => {
   const onLogIn = async ({ email, password }: RegisterValues) => {
     const success = await logIn({ email, password });
     if (success) {
+      toast({ status: 'success', position: 'top-right', title: 'Log in.' });
       navigate('/app/habits');
     } else {
       toast({
