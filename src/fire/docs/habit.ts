@@ -132,18 +132,18 @@ export class HabitDoc extends FireDocument<HabitData> {
   toggleDoneToday() {
     const todayHabitRecord = this.todayHabitRecord;
     if (todayHabitRecord) {
-      this.insertHabitRecord(new HabitRecord(todayHabitRecord).toggleDone().data);
+      return this.insertHabitRecord(new HabitRecord(todayHabitRecord).toggleDone().data);
     } else {
-      this.insertHabitRecord(HabitRecord.create().toggleDone().data);
+      return this.insertHabitRecord(HabitRecord.create().toggleDone().data);
     }
   }
 
   doCommentToday(comment: string) {
     const todayHabitRecord = this.todayHabitRecord;
     if (todayHabitRecord) {
-      this.insertHabitRecord(new HabitRecord(todayHabitRecord).doComment(comment).data);
+      return this.insertHabitRecord(new HabitRecord(todayHabitRecord).doComment(comment).data);
     } else {
-      this.insertHabitRecord(HabitRecord.create().doComment(comment).data);
+      return this.insertHabitRecord(HabitRecord.create().doComment(comment).data);
     }
   }
 }
