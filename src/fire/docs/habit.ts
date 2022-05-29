@@ -25,7 +25,7 @@ export interface HabitData {
   startedAt: Timestamp;
   scheduledEndedAt: Timestamp;
   gaveUpAt: Timestamp | null;
-  habitRecords: HabitRecordData[];
+  habitRecords: HabitRecord[];
 }
 
 export interface HabitDoc extends HabitData {}
@@ -51,7 +51,9 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   get todayHabitRecord() {
-    return this.habitRecords.find((h) => isToday(h.createdAt.toDate())) ?? new HabitRecord({}).data;
+    return (
+      this.habitRecords.find((h) => isToday(h.createdAt.toDate())) ?? new HabitRecordEntity({}).data
+    );
   }
 
   get hasDoneToday() {
@@ -63,7 +65,7 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   get habitRecordsWithBlankFilled() {
-    const res: HabitRecordData[] = [];
+    const res: HabitRecord[] = [];
     let d = this.startedAt.toDate();
 
     while (
@@ -125,29 +127,29 @@ export class HabitDoc extends FireDocument<HabitData> {
     });
   }
 
-  insertHabitRecord(habitRecord: HabitRecord) {
-    return this.edit({ habitRecords: insertEntity(this.habitRecords, habitRecord.data) });
+  insertHabitRecord(habitRecordEntity: HabitRecordEntity) {
+    return this.edit({ habitRecords: insertEntity(this.habitRecords, habitRecordEntity.data) });
   }
 
   toggleDoneToday() {
-    return this.insertHabitRecord(new HabitRecord(this.todayHabitRecord).toggleDone());
+    return this.insertHabitRecord(new HabitRecordEntity(this.todayHabitRecord).toggleDone());
   }
 
   doCommentToday(comment: string) {
-    return this.insertHabitRecord(new HabitRecord(this.todayHabitRecord).doComment(comment));
+    return this.insertHabitRecord(new HabitRecordEntity(this.todayHabitRecord).doComment(comment));
   }
 }
 
-export interface HabitRecordData {
+export interface HabitRecord {
   id: string;
   done: boolean;
   comment: string;
   createdAt: Timestamp;
 }
 
-export interface HabitRecord extends HabitRecordData {}
-export class HabitRecord {
-  constructor(data: Partial<HabitRecordData>) {
+export interface HabitRecordEntity extends HabitRecord {}
+export class HabitRecordEntity {
+  constructor(data: Partial<HabitRecord>) {
     Object.assign(this, this.defaultData, data);
   }
 
@@ -156,7 +158,7 @@ export class HabitRecord {
     return fields;
   }
 
-  get defaultData(): HabitRecordData {
+  get defaultData(): HabitRecord {
     return { id: v4(), done: false, comment: '', createdAt: Timestamp.now() };
   }
 

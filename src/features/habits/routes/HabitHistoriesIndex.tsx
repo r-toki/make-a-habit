@@ -5,14 +5,14 @@ import { BiCheck } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout';
-import { HabitRecordData } from '@/fire/docs';
+import { HabitRecord } from '@/fire/docs';
 import { assertDefined } from '@/utils/assert-defined';
 
 import { useHabit } from '../hooks';
 
 const formattedDay = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
 
-type HabitRecordItemProps = { habitRecord: HabitRecordData };
+type HabitRecordItemProps = { habitRecord: HabitRecord };
 
 const HabitRecordItem: FC<HabitRecordItemProps> = ({ habitRecord }) => {
   return (
