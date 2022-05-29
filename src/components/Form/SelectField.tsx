@@ -27,6 +27,7 @@ export const SelectField: FC<SelectFieldProps> = ({
 }) => {
   return (
     <FieldWrapper label={label} error={error}>
+      {/* NOTE: 参考 https://stackoverflow.com/a/67427010 */}
       <Controller
         control={control}
         name={name}
