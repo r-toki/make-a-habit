@@ -8,7 +8,7 @@ import {
 export const useAuthAction = () => {
   const verifyEmail = async (oobCode: string) => {
     try {
-      console.log('[make-a-habit] verify email');
+      console.log('[make-a-habit] call verifyEmail');
       await applyActionCode(getAuth(), oobCode);
       return true;
     } catch (e: any) {

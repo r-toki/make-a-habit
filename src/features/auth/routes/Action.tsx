@@ -33,7 +33,7 @@ const useVerifyEmail = () => {
   };
 
   useEffect(() => {
-    // TODO: ここなぜか2回呼ばれる
+    // TODO: 開発環境だとなぜか2回呼ばれる
     if (mode === 'verifyEmail') onVerifyEmail();
   }, []);
 };
