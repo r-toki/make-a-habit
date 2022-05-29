@@ -51,7 +51,7 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 
   get todayHabitRecord() {
-    return this.habitRecords.find((h) => isToday(h.createdAt.toDate()));
+    return this.habitRecords.find((h) => isToday(h.createdAt.toDate())) ?? new HabitRecord({}).data;
   }
 
   get hasDoneToday() {
@@ -125,26 +125,16 @@ export class HabitDoc extends FireDocument<HabitData> {
     });
   }
 
-  insertHabitRecord(habitRecord: HabitRecordData) {
-    return this.edit({ habitRecords: insertEntity(this.habitRecords, habitRecord) });
+  insertHabitRecord(habitRecord: HabitRecord) {
+    return this.edit({ habitRecords: insertEntity(this.habitRecords, habitRecord.data) });
   }
 
   toggleDoneToday() {
-    const todayHabitRecord = this.todayHabitRecord;
-    if (todayHabitRecord) {
-      return this.insertHabitRecord(new HabitRecord(todayHabitRecord).toggleDone().data);
-    } else {
-      return this.insertHabitRecord(HabitRecord.create().toggleDone().data);
-    }
+    return this.insertHabitRecord(new HabitRecord(this.todayHabitRecord).toggleDone());
   }
 
   doCommentToday(comment: string) {
-    const todayHabitRecord = this.todayHabitRecord;
-    if (todayHabitRecord) {
-      return this.insertHabitRecord(new HabitRecord(todayHabitRecord).doComment(comment).data);
-    } else {
-      return this.insertHabitRecord(HabitRecord.create().doComment(comment).data);
-    }
+    return this.insertHabitRecord(new HabitRecord(this.todayHabitRecord).doComment(comment));
   }
 }
 
@@ -157,8 +147,8 @@ export interface HabitRecordData {
 
 export interface HabitRecord extends HabitRecordData {}
 export class HabitRecord {
-  constructor(data: HabitRecordData) {
-    Object.assign(this, data);
+  constructor(data: Partial<HabitRecordData>) {
+    Object.assign(this, this.defaultData, data);
   }
 
   get data() {
@@ -166,8 +156,8 @@ export class HabitRecord {
     return fields;
   }
 
-  static create() {
-    return new HabitRecord({ id: v4(), done: false, comment: '', createdAt: Timestamp.now() });
+  get defaultData(): HabitRecordData {
+    return { id: v4(), done: false, comment: '', createdAt: Timestamp.now() };
   }
 
   toggleDone(done?: boolean | undefined) {

@@ -57,7 +57,7 @@ export const HabitHistoriesIndex: FC = () => {
           </Heading>
 
           <Stack spacing="4">
-            {habit.habitRecords.map((h) => (
+            {habit.habitRecords.reverse().map((h) => (
               <HabitRecordItem key={h.id} habitRecord={h} />
             ))}
           </Stack>

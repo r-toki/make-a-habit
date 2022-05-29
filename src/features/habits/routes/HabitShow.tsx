@@ -72,7 +72,7 @@ export const HabitShow: FC = () => {
           <Form<RegisterValues, typeof schema>
             onSubmit={onComment}
             schema={schema}
-            options={{ defaultValues: { comment: habit.todayHabitRecord?.comment ?? '' } }}
+            options={{ defaultValues: { comment: habit.todayHabitRecord.comment } }}
           >
             {({ register, formState }) => (
               <Stack w="xs">
