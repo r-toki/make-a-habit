@@ -52,7 +52,7 @@ export const HabitHistoriesIndex: FC = () => {
     <Layout title="Histories" backTo="/app/habits/all">
       {habit ? (
         <Stack py="4" spacing="4">
-          <Heading alignSelf="center" size="sm">
+          <Heading size="sm" textAlign="center" whiteSpace="pre-wrap">
             {habit.content}
           </Heading>
 
