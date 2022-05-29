@@ -11,8 +11,8 @@ export const useAuthAction = () => {
       console.log('[make-a-habit] call verifyEmail');
       await applyActionCode(getAuth(), oobCode);
       return true;
-    } catch (e: any) {
-      console.error(`[make-a-habit] ${e.toString()}`);
+    } catch (e) {
+      console.error(`[make-a-habit] ${(e as unknown as Error).toString()}`);
       return false;
     }
   };
