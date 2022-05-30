@@ -1,11 +1,10 @@
-import { query, Timestamp, where } from 'firebase/firestore';
 import { orderBy } from 'lodash-es';
 import { useEffect, useState } from 'react';
 
 import { HabitDoc } from '@/fire/docs';
 import { useMe } from '@/providers/me';
 
-export const useHabits = () => {
+export const useHabitsAllIndex = () => {
   const { me } = useMe();
 
   const [loading, setLoading] = useState(false);
@@ -15,26 +14,19 @@ export const useHabits = () => {
   useEffect(() => {
     setLoading(true);
     me.habitsCollection
-      .findManyByQuery((ref) => query(ref, where('scheduledEndedAt', '>', Timestamp.now())))
+      .findManyByQuery((ref) => ref)
       .then((v) =>
-        setHabits(
-          orderBy(
-            v.filter((e) => !e.gaveUpAt),
-            (d) => d.startedAt,
-            'desc'
-          )
-        )
+        setHabits(orderBy(v, [(d) => d.inProgress, (d) => d.startedAt], ['desc', 'desc']))
       )
       .then(() => setLoading(false));
   }, []);
 
-  const giveUp = async (habit: HabitDoc) => {
+  const remove = async (habit: HabitDoc) => {
     setLoading(true);
-    habit.giveUp();
-    await habit.save();
+    await habit.delete();
     setHabits((prev) => prev.filter((h) => h.id !== habit.id));
     setLoading(false);
   };
 
-  return { loading, habits, giveUp };
+  return { loading, habits, remove };
 };

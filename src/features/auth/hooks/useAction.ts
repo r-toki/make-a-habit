@@ -5,7 +5,7 @@ import {
   verifyPasswordResetCode,
 } from 'firebase/auth';
 
-export const useAuthAction = () => {
+export const useAction = () => {
   const verifyEmail = async (oobCode: string) => {
     try {
       console.log('[make-a-habit] call verifyEmail');

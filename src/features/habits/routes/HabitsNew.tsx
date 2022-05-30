@@ -8,7 +8,7 @@ import { TextareaField } from '@/components/Form';
 import { SelectField } from '@/components/Form';
 import { Layout } from '@/components/Layout';
 
-import { useCreateHabit } from '../hooks';
+import { useHabitsNew } from '../hooks';
 
 const schema = z.object({
   content: z.string().min(1, 'Required').max(140),
@@ -23,7 +23,7 @@ type RegisterValues = {
 export const HabitsNew: FC = () => {
   const navigate = useNavigate();
 
-  const { createHabit } = useCreateHabit();
+  const { createHabit } = useHabitsNew();
 
   const onCreateHabit = async ({
     content,

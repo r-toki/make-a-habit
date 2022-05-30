@@ -8,7 +8,7 @@ import { Layout } from '@/components/Layout';
 import { HabitRecordDoc } from '@/fire/docs';
 import { assertDefined } from '@/utils/assert-defined';
 
-import { useHabitHistoriesIndex } from '../hooks/useHabitHistoriesIndex';
+import { useHabitHistoriesIndex } from '../hooks';
 
 const formattedDay = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
 

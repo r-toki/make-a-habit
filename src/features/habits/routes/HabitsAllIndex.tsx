@@ -16,7 +16,7 @@ import { Link } from '@/components/Link';
 import { formattedHabitPeriod, HabitDoc } from '@/fire/docs';
 import { useAppTheme } from '@/providers/app';
 
-import { useHabitsAll } from '../hooks';
+import { useHabitsAllIndex } from '../hooks';
 
 type HabitItemProps = { habit: HabitDoc; onRemove: () => void };
 
@@ -64,7 +64,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit, onRemove }) => {
 };
 
 export const HabitsAllIndex: FC = () => {
-  const { loading, habits, remove } = useHabitsAll();
+  const { loading, habits, remove } = useHabitsAllIndex();
 
   return (
     <Layout title="Histories">

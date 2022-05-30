@@ -1,7 +1,7 @@
 import { HabitDoc } from '@/fire/docs';
 import { useMe } from '@/providers/me';
 
-export const useCreateHabit = () => {
+export const useHabitsNew = () => {
   const { me } = useMe();
 
   const createHabit = async ({

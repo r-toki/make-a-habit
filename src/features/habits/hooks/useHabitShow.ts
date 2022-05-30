@@ -4,7 +4,7 @@ import { HabitDoc, HabitRecordDoc } from '@/fire/docs';
 import { useMe } from '@/providers/me';
 import { assertDefined } from '@/utils/assert-defined';
 
-export const useHabit = (habitId: string) => {
+export const useHabitShow = (habitId: string) => {
   const { me } = useMe();
 
   const [loading, setLoading] = useState(false);

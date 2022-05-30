@@ -10,7 +10,7 @@ import { Layout } from '@/components/Layout';
 import { useAppTheme } from '@/providers/app';
 import { assertDefined } from '@/utils/assert-defined';
 
-import { useHabit } from '../hooks/useHabit';
+import { useHabitShow } from '../hooks';
 
 const schema = z.object({ comment: z.string() });
 
@@ -21,12 +21,12 @@ const ChakraBox = chakra(motion.div, {
 });
 
 export const HabitShow: FC = () => {
-  const theme = useAppTheme();
-
   const { habitId } = useParams();
   assertDefined(habitId);
 
-  const { loading, habit, habitRecord, toggleDone, doComment } = useHabit(habitId);
+  const { loading, habit, habitRecord, toggleDone, doComment } = useHabitShow(habitId);
+
+  const theme = useAppTheme();
 
   const controls = useAnimation();
 

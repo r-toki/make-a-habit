@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Form, InputField } from '@/components/Form';
 import { assertDefined } from '@/utils/assert-defined';
 
-import { useAuthAction } from '../hooks';
+import { useAction } from '../hooks';
 
 const VerifyEmail: FC = () => {
   const [searchParams] = useSearchParams();
@@ -17,7 +17,7 @@ const VerifyEmail: FC = () => {
 
   const toast = useToast();
 
-  const { verifyEmail } = useAuthAction();
+  const { verifyEmail } = useAction();
 
   const onVerifyEmail = async () => {
     assertDefined(oobCode);
@@ -62,7 +62,7 @@ const PasswordResetForm: FC = () => {
 
   const toast = useToast();
 
-  const { resetPassword } = useAuthAction();
+  const { resetPassword } = useAction();
 
   const onResetPassword = async ({ password }: RegisterValues) => {
     assertDefined(oobCode);

@@ -9,23 +9,19 @@ import {
   MenuList,
   Stack,
 } from '@chakra-ui/react';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { BiDotsVertical, BiShocked } from 'react-icons/bi';
 
 import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
-import { formattedHabitPeriod, HabitDoc, HabitRecordDoc } from '@/fire/docs';
+import { formattedHabitPeriod, HabitDoc } from '@/fire/docs';
 
-import { useHabits } from '../hooks/useHabits';
+import { useHabitsIndex, useHabitsIndexHabitItem } from '../hooks';
 
 type HabitItemProps = { habit: HabitDoc; onGiveUp: () => void };
 
 const HabitItem: FC<HabitItemProps> = ({ habit, onGiveUp }) => {
-  const [habitRecord, setHabitRecord] = useState<HabitRecordDoc>();
-
-  useEffect(() => {
-    habit.habitRecordsCollection.findTodayHabitRecord().then(setHabitRecord);
-  }, [habit]);
+  const { habitRecord } = useHabitsIndexHabitItem(habit);
 
   return (
     <HStack spacing={{ base: '2', md: '4' }}>
@@ -64,7 +60,7 @@ const HabitItem: FC<HabitItemProps> = ({ habit, onGiveUp }) => {
 };
 
 export const HabitsIndex: FC = () => {
-  const { loading, habits, giveUp } = useHabits();
+  const { loading, habits, giveUp } = useHabitsIndex();
 
   return (
     <Layout title="Habits">
