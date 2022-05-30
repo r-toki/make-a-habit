@@ -3,7 +3,9 @@ import {
   differenceInCalendarDays,
   endOfToday,
   format,
+  isBefore,
   isPast,
+  isSameDay,
   startOfToday,
   subDays,
 } from 'date-fns';
@@ -13,6 +15,7 @@ import { collection, Timestamp } from 'firebase/firestore';
 import { Identity } from '@/lib/identity';
 
 import { HabitRecordsCollection, HabitsCollection } from '../collections';
+import { HabitRecordDoc } from './habit-record';
 
 export interface HabitData {
   content: string;
@@ -85,36 +88,35 @@ export class HabitDoc extends FireDocument<HabitData> {
   }
 }
 
-// NOTE: for View
 export const formattedHabitPeriod = (habit: HabitDoc) => {
   const f = (ts: Timestamp) => format(ts.toDate(), 'yyyy/MM/dd');
   return `${f(habit.startedAt)} ~ ${f(habit.scheduledEndedAt)}`;
 };
 
-// get habitRecordsWithBlankFilled() {
-//   const res: HabitRecord[] = [];
-//   let d = this.startedAt.toDate();
+export const habitRecordsWithBlankFilled = (habit: HabitDoc, habitRecords: HabitRecordDoc[]) => {
+  const res: HabitRecordDoc[] = [];
+  let d = habit.startedAt.toDate();
 
-//   while (
-//     isBefore(
-//       d,
-//       this.gaveUpAt
-//         ? this.gaveUpAt.toDate()
-//         : this.hasEnded
-//         ? this.scheduledEndedAt.toDate()
-//         : new Date()
-//     )
-//   ) {
-//     const habitRecord = this.habitRecords.find((h) => isSameDay(h.createdAt.toDate(), d));
+  while (
+    isBefore(
+      d,
+      habit.gaveUpAt
+        ? habit.gaveUpAt.toDate()
+        : habit.hasEnded
+        ? habit.scheduledEndedAt.toDate()
+        : new Date()
+    )
+  ) {
+    const habitRecord = habitRecords.find((h) => isSameDay(h.createdAt.toDate(), d));
 
-//     if (habitRecord) {
-//       res.push(habitRecord);
-//     } else {
-//       res.push({ id: v4(), done: false, comment: '', createdAt: Timestamp.fromDate(d) });
-//     }
+    if (habitRecord) {
+      res.push(habitRecord);
+    } else {
+      res.push(HabitRecordDoc.create(habit.habitRecordsCollection));
+    }
 
-//     d = addDays(d, 1);
-//   }
+    d = addDays(d, 1);
+  }
 
-//   return res.reverse();
-// }
+  return res.reverse();
+};

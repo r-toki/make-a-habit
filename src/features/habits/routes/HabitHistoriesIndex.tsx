@@ -8,7 +8,7 @@ import { Layout } from '@/components/Layout';
 import { HabitRecordDoc } from '@/fire/docs';
 import { assertDefined } from '@/utils/assert-defined';
 
-import { useHabit } from '../hooks';
+import { useHabitHistoriesIndex } from '../hooks/useHabitHistoriesIndex';
 
 const formattedDay = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.'];
 
@@ -46,20 +46,20 @@ export const HabitHistoriesIndex: FC = () => {
   const { habitId } = useParams();
   assertDefined(habitId);
 
-  const { habit } = useHabit(habitId);
+  const { habit, habitRecords } = useHabitHistoriesIndex(habitId);
 
   return (
     <Layout title="Histories" backTo="/app/habits/all">
-      {habit ? (
+      {habit && habitRecords ? (
         <Stack py="4" spacing="4">
           <Heading size="sm" textAlign="center" whiteSpace="pre-wrap">
             {habit.content}
           </Heading>
 
           <Stack spacing="4">
-            {/* {habit.habitRecordsWithBlankFilled.map((h) => (
+            {habitRecords.map((h) => (
               <HabitRecordItem key={h.id} habitRecord={h} />
-            ))} */}
+            ))}
           </Stack>
         </Stack>
       ) : null}
