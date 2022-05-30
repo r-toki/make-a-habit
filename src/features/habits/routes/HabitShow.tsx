@@ -26,21 +26,21 @@ export const HabitShow: FC = () => {
   const { habitId } = useParams();
   assertDefined(habitId);
 
-  const { loading, habit, toggleDone, doComment } = useHabit(habitId);
+  const { loading, habit, habitRecord, toggleDone, doComment } = useHabit(habitId);
 
   const controls = useAnimation();
 
   useEffect(() => {
-    if (!habit) return;
+    if (!habitRecord) return;
 
     controls.start(
       {
-        backgroundColor: habit.hasDoneToday ? theme.colors.primary.main : theme.colors.primary[100],
+        backgroundColor: habitRecord.done ? theme.colors.primary.main : theme.colors.primary[100],
         scale: [1, 1.1, 1],
       },
       { duration: 1 }
     );
-  }, [habit]);
+  }, [habitRecord]);
 
   const onToggleDone = async () => {
     if (!habit) return;
@@ -55,7 +55,7 @@ export const HabitShow: FC = () => {
 
   return (
     <Layout title="Habits" backTo="/app/habits">
-      {habit ? (
+      {habit && habitRecord ? (
         <VStack py={{ base: '2', md: '4' }} spacing={{ base: '4', md: '8' }}>
           <Heading textAlign="center" whiteSpace="pre-wrap">
             {habit.content}
@@ -72,7 +72,7 @@ export const HabitShow: FC = () => {
           <Form<RegisterValues, typeof schema>
             onSubmit={onComment}
             schema={schema}
-            options={{ defaultValues: { comment: habit.todayHabitRecord.comment } }}
+            options={{ defaultValues: { comment: habitRecord.comment } }}
           >
             {({ register, formState }) => (
               <Stack w="xs">

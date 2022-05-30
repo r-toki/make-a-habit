@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { HabitDoc } from '@/fire/docs';
+import { HabitDoc, HabitRecordDoc } from '@/fire/docs';
 import { useMe } from '@/providers/me';
 import { assertDefined } from '@/utils/assert-defined';
 
@@ -10,39 +10,46 @@ export const useHabit = (habitId: string) => {
   const [loading, setLoading] = useState(false);
 
   const [habit, setHabit] = useState<HabitDoc>();
+  const [habitRecord, setHabitRecord] = useState<HabitRecordDoc>();
 
   useEffect(() => {
-    setLoading(true);
+    (async () => {
+      setLoading(true);
 
-    me.habitsCollection
-      .findOne(habitId)
-      .then(setHabit)
-      .then(() => setLoading(false));
+      const habit = await me.habitsCollection.findOne(habitId);
+      const habitRecord = await habit.habitRecordsCollection.findTodayHabitRecord();
+
+      setHabit(habit);
+      setHabitRecord(habitRecord ?? HabitRecordDoc.create(habit.habitRecordsCollection));
+
+      setLoading(false);
+    })();
   }, [habitId]);
 
   const mutate = async (cb: () => void) => {
-    if (!habit || loading) return;
+    if (loading) return;
+    assertDefined(habitRecord);
 
     setLoading(true);
 
     cb();
-    await habit.save();
-    setHabit(habit.rebuild());
+    await habitRecord.save();
+    setHabitRecord(habitRecord.rebuild());
 
     setLoading(false);
   };
 
   const toggleDone = () =>
-    mutate(async () => {
-      assertDefined(habit);
-      habit.toggleDoneToday();
+    mutate(() => {
+      assertDefined(habitRecord);
+      habitRecord.toggleDone();
     });
 
   const doComment = (comment: string) =>
-    mutate(async () => {
-      assertDefined(habit);
-      habit.doCommentToday(comment);
+    mutate(() => {
+      assertDefined(habitRecord);
+      habitRecord.doComment(comment);
     });
 
-  return { loading, habit, toggleDone, doComment };
+  return { loading, habit, habitRecord, toggleDone, doComment };
 };

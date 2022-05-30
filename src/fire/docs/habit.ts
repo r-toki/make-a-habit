@@ -3,21 +3,16 @@ import {
   differenceInCalendarDays,
   endOfToday,
   format,
-  isBefore,
   isPast,
-  isSameDay,
-  isToday,
   startOfToday,
   subDays,
 } from 'date-fns';
 import { FireDocument } from 'fire-hose-web';
-import { Timestamp } from 'firebase/firestore';
-import { v4 } from 'uuid';
+import { collection, Timestamp } from 'firebase/firestore';
 
 import { Identity } from '@/lib/identity';
-import { insertEntity } from '@/utils/store-helper';
 
-import { HabitsCollection } from '../collections';
+import { HabitRecordsCollection, HabitsCollection } from '../collections';
 
 export interface HabitData {
   content: string;
@@ -25,11 +20,12 @@ export interface HabitData {
   startedAt: Timestamp;
   scheduledEndedAt: Timestamp;
   gaveUpAt: Timestamp | null;
-  habitRecords: HabitRecord[];
 }
 
 export interface HabitDoc extends HabitData {}
 export class HabitDoc extends FireDocument<HabitData> {
+  habitRecordsCollection = new HabitRecordsCollection(collection(this.ref, 'habitRecords'));
+
   get progressPercent() {
     if (this.gaveUpAt) {
       const ratio =
@@ -50,46 +46,8 @@ export class HabitDoc extends FireDocument<HabitData> {
     return ratio * 100;
   }
 
-  get todayHabitRecord() {
-    return (
-      this.habitRecords.find((h) => isToday(h.createdAt.toDate())) ?? new HabitRecordEntity({}).data
-    );
-  }
-
-  get hasDoneToday() {
-    return !!this.todayHabitRecord?.done;
-  }
-
   get hasEnded() {
     return isPast(this.scheduledEndedAt.toDate());
-  }
-
-  get habitRecordsWithBlankFilled() {
-    const res: HabitRecord[] = [];
-    let d = this.startedAt.toDate();
-
-    while (
-      isBefore(
-        d,
-        this.gaveUpAt
-          ? this.gaveUpAt.toDate()
-          : this.hasEnded
-          ? this.scheduledEndedAt.toDate()
-          : new Date()
-      )
-    ) {
-      const habitRecord = this.habitRecords.find((h) => isSameDay(h.createdAt.toDate(), d));
-
-      if (habitRecord) {
-        res.push(habitRecord);
-      } else {
-        res.push({ id: v4(), done: false, comment: '', createdAt: Timestamp.fromDate(d) });
-      }
-
-      d = addDays(d, 1);
-    }
-
-    return res.reverse();
   }
 
   get inProgress() {
@@ -112,7 +70,6 @@ export class HabitDoc extends FireDocument<HabitData> {
         startedAt: Timestamp.fromDate(startOfToday()),
         scheduledEndedAt,
         gaveUpAt: null,
-        habitRecords: [],
       })
     );
   }
@@ -126,52 +83,6 @@ export class HabitDoc extends FireDocument<HabitData> {
       gaveUpAt: Timestamp.now(),
     });
   }
-
-  insertHabitRecord(habitRecordEntity: HabitRecordEntity) {
-    return this.edit({ habitRecords: insertEntity(this.habitRecords, habitRecordEntity.data) });
-  }
-
-  toggleDoneToday() {
-    return this.insertHabitRecord(new HabitRecordEntity(this.todayHabitRecord).toggleDone());
-  }
-
-  doCommentToday(comment: string) {
-    return this.insertHabitRecord(new HabitRecordEntity(this.todayHabitRecord).doComment(comment));
-  }
-}
-
-export interface HabitRecord {
-  id: string;
-  done: boolean;
-  comment: string;
-  createdAt: Timestamp;
-}
-
-export interface HabitRecordEntity extends HabitRecord {}
-export class HabitRecordEntity {
-  constructor(data: Partial<HabitRecord>) {
-    Object.assign(this, this.defaultData, data);
-  }
-
-  get data() {
-    const { ...fields } = this;
-    return fields;
-  }
-
-  get defaultData(): HabitRecord {
-    return { id: v4(), done: false, comment: '', createdAt: Timestamp.now() };
-  }
-
-  toggleDone(done?: boolean | undefined) {
-    if (typeof done === 'boolean') {
-      return Object.assign(this, { done });
-    }
-    return Object.assign(this, { done: !this.done });
-  }
-
-  doComment(comment: string) {
-    return Object.assign(this, { comment });
-  }
 }
 
 // NOTE: for View
@@ -179,3 +90,31 @@ export const formattedHabitPeriod = (habit: HabitDoc) => {
   const f = (ts: Timestamp) => format(ts.toDate(), 'yyyy/MM/dd');
   return `${f(habit.startedAt)} ~ ${f(habit.scheduledEndedAt)}`;
 };
+
+// get habitRecordsWithBlankFilled() {
+//   const res: HabitRecord[] = [];
+//   let d = this.startedAt.toDate();
+
+//   while (
+//     isBefore(
+//       d,
+//       this.gaveUpAt
+//         ? this.gaveUpAt.toDate()
+//         : this.hasEnded
+//         ? this.scheduledEndedAt.toDate()
+//         : new Date()
+//     )
+//   ) {
+//     const habitRecord = this.habitRecords.find((h) => isSameDay(h.createdAt.toDate(), d));
+
+//     if (habitRecord) {
+//       res.push(habitRecord);
+//     } else {
+//       res.push({ id: v4(), done: false, comment: '', createdAt: Timestamp.fromDate(d) });
+//     }
+
+//     d = addDays(d, 1);
+//   }
+
+//   return res.reverse();
+// }

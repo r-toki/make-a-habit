@@ -9,24 +9,30 @@ import {
   MenuList,
   Stack,
 } from '@chakra-ui/react';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { BiDotsVertical, BiShocked } from 'react-icons/bi';
 
 import { Layout } from '@/components/Layout';
 import { Link } from '@/components/Link';
-import { formattedHabitPeriod, HabitDoc } from '@/fire/docs';
+import { formattedHabitPeriod, HabitDoc, HabitRecordDoc } from '@/fire/docs';
 
 import { useHabits } from '../hooks/useHabits';
 
 type HabitItemProps = { habit: HabitDoc; onGiveUp: () => void };
 
 const HabitItem: FC<HabitItemProps> = ({ habit, onGiveUp }) => {
+  const [habitRecord, setHabitRecord] = useState<HabitRecordDoc>();
+
+  useEffect(() => {
+    habit.habitRecordsCollection.findTodayHabitRecord().then(setHabitRecord);
+  }, [habit]);
+
   return (
     <HStack spacing={{ base: '2', md: '4' }}>
       <CircularProgress
         size="64px"
         stroke="black"
-        color={habit.hasDoneToday ? 'primary.main' : 'blackAlpha.500'}
+        color={habitRecord?.done ? 'primary.main' : 'blackAlpha.500'}
         value={habit.progressPercent}
       />
 
