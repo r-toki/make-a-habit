@@ -6,6 +6,10 @@ import { afterAll, beforeAll, expect, it } from 'vitest';
 import { UsersCollection } from '@/fire/collections';
 import { UserDoc } from '@/fire/docs';
 
+// TODO:
+// 1. render async component and test connect firestore
+// 2. di collection for test ( to create context of root collections )
+
 const testEnv = await initializeTestEnvironment({
   projectId: 'make-a-habit-fd3f5',
   firestore: {
