@@ -40,7 +40,7 @@ export const HabitShow: FC = () => {
       },
       { duration: 1 }
     );
-  }, [habitRecord?.done]);
+  }, [habitRecord]);
 
   const onToggleDone = async () => {
     if (!habit) return;
