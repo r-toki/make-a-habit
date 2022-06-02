@@ -1,7 +1,7 @@
 import { initializeTestEnvironment } from '@firebase/rules-unit-testing';
+import { render, screen } from '@testing-library/react';
 import { collection, doc, getDoc, Timestamp } from 'firebase/firestore';
 import fs from 'fs';
-import { afterAll, beforeAll, expect, it } from 'vitest';
 
 import { UsersCollection } from '@/fire/collections';
 import { UserDoc } from '@/fire/docs';
@@ -57,3 +57,17 @@ it('trivial', async () => {
     });
   });
 });
+
+// const App = () => {
+//   return <div>TITLE</div>;
+// };
+
+// it('component', async () => {
+//   render(<App />);
+
+//   expect(screen.getByText('TITLE')).toBeInTheDocument();
+// });
+
+const HelloWorld = () => <h1>Hello World</h1>;
+const { debug } = render(<HelloWorld />);
+debug();
