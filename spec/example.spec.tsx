@@ -1,8 +1,8 @@
 import { initializeTestEnvironment, RulesTestContext } from '@firebase/rules-unit-testing';
 import { fireEvent, render } from '@testing-library/react';
-import { collection, doc, getDoc, Timestamp } from 'firebase/firestore';
+import { collection, doc, getDoc } from 'firebase/firestore';
 import fs from 'fs';
-import { useState } from 'react';
+import { FormEventHandler, useState } from 'react';
 import { afterAll, beforeAll, expect, it } from 'vitest';
 
 import { UsersCollection } from '@/fire/collections';
@@ -13,7 +13,7 @@ import { UserDoc } from '@/fire/docs';
 //       2. how to use getBy, queryBy and findBy -> https://qiita.com/nazeudon/items/28731673dad537c06d72
 
 // UTIL
-const ts = (iso: string) => Timestamp.fromDate(new Date(iso));
+// const ts = (iso: string) => Timestamp.fromDate(new Date(iso));
 
 // TEST
 const testEnv = await initializeTestEnvironment({
@@ -80,4 +80,59 @@ it('async count component', async () => {
 
   fireEvent.click(getByText('minus 1'));
   expect(await findByText('0')).toBeDefined();
+});
+
+const UsersNewPage = () => {
+  const [toast, setToast] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const createUser = async ({ name }: { name: string }) => {
+    setLoading(true);
+
+    const user = UserDoc.create(usersCollection, '0', { name });
+    await user.save();
+
+    setLoading(false);
+    setToast('Created!');
+  };
+
+  const [name, setName] = useState('');
+
+  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    await createUser({ name });
+  };
+
+  return (
+    <div>
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          aria-label="name-input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <button type="submit" disabled={loading}>
+          POST
+        </button>
+      </form>
+
+      {toast && <div>{toast}</div>}
+    </div>
+  );
+};
+
+it('create user on users new page', async () => {
+  const { getByText, getByLabelText, findByText } = render(<UsersNewPage />);
+
+  fireEvent.change(getByLabelText('name-input'), { target: { value: 'EIZO' } });
+  fireEvent.click(getByText('POST'));
+
+  expect(await findByText('Created!')).toBeDefined();
+  await sudo(async ({ db }) => {
+    const gotUser = await getDoc(doc(db, 'users', '0'));
+    expect(gotUser.data()?.name).toBe('EIZO');
+  });
 });
