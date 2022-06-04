@@ -25,13 +25,14 @@ const testEnv = await initializeTestEnvironment({
   },
 });
 
-const sudo = (cb: ({ db }: { db: ReturnType<RulesTestContext['firestore']> }) => Promise<void>) => {
-  return testEnv.withSecurityRulesDisabled((ctx) =>
+type SudoCallback = ({ db }: { db: ReturnType<RulesTestContext['firestore']> }) => Promise<void>;
+
+const sudo = (cb: SudoCallback) =>
+  testEnv.withSecurityRulesDisabled((ctx) =>
     cb({
       db: ctx.firestore(),
     })
   );
-};
 
 const authCtx = testEnv.authenticatedContext('0');
 const authDb = authCtx.firestore();
