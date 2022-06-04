@@ -44,7 +44,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testEnv.clearFirestore();
-  await testEnv.clearFirestore();
+  await testEnv.cleanup();
 });
 
 it('create user', async () => {
@@ -53,7 +53,6 @@ it('create user', async () => {
 
   await sudo(async ({ db }) => {
     const gotUser = await getDoc(doc(db, 'users', '0'));
-
     expect(gotUser.data()?.name).toBe('EIZO');
   });
 });
