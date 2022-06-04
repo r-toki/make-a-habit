@@ -3,6 +3,7 @@ import { FC, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { AuthProvider } from './auth';
+import { CollectionsProvider } from './collections';
 
 const theme = extendTheme({
   // NOTE: https://colorhunt.co
@@ -31,7 +32,9 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider>
-        <BrowserRouter>{children}</BrowserRouter>
+        <CollectionsProvider>
+          <BrowserRouter>{children}</BrowserRouter>
+        </CollectionsProvider>
       </AuthProvider>
     </ChakraProvider>
   );
