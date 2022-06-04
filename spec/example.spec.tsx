@@ -84,15 +84,11 @@ it('async count component', async () => {
 
 const UsersNewPage = () => {
   const [toast, setToast] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const createUser = async ({ name }: { name: string }) => {
-    setLoading(true);
-
     const user = UserDoc.create(usersCollection, '0', { name });
     await user.save();
 
-    setLoading(false);
     setToast('Created!');
   };
 
@@ -114,9 +110,7 @@ const UsersNewPage = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <button type="submit" disabled={loading}>
-          POST
-        </button>
+        <button type="submit">POST</button>
       </form>
 
       {toast && <div>{toast}</div>}
@@ -131,6 +125,7 @@ it('create user on users new page', async () => {
   fireEvent.click(getByText('POST'));
 
   expect(await findByText('Created!')).toBeDefined();
+
   await sudo(async ({ db }) => {
     const gotUser = await getDoc(doc(db, 'users', '0'));
     expect(gotUser.data()?.name).toBe('EIZO');
