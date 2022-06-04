@@ -12,9 +12,10 @@ import { UserDoc } from '@/fire/docs';
 //       1. setup -> https://www.eternaldev.com/blog/testing-a-react-application-with-vitest/
 //       2. how to use getBy, queryBy and findBy -> https://qiita.com/nazeudon/items/28731673dad537c06d72
 
-// UTIL:
+// UTIL
 const ts = (iso: string) => Timestamp.fromDate(new Date(iso));
 
+// TEST
 const testEnv = await initializeTestEnvironment({
   projectId: 'make-a-habit-fd3f5',
   firestore: {
