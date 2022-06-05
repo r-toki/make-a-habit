@@ -10,7 +10,8 @@ import {
   subDays,
 } from 'date-fns';
 import { FireDocument } from 'fire-hose-web';
-import { collection, Timestamp } from 'firebase/firestore';
+import { collection, doc, Timestamp } from 'firebase/firestore';
+import { v4 } from 'uuid';
 
 import { Identity } from '@/lib/identity';
 
@@ -112,7 +113,18 @@ export const habitRecordsWithBlankFilled = (habit: HabitDoc, habitRecords: Habit
     if (habitRecord) {
       res.push(habitRecord);
     } else {
-      res.push(HabitRecordDoc.create(habit.habitRecordsCollection));
+      const id = v4();
+      res.push(
+        new HabitRecordDoc({
+          ref: doc(habit.habitRecordsCollection.ref, id),
+          id,
+          data: () => ({
+            done: false,
+            comment: '',
+            createdAt: Timestamp.fromDate(d),
+          }),
+        })
+      );
     }
 
     d = addDays(d, 1);
