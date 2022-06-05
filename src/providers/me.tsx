@@ -1,16 +1,18 @@
 import { createContext, FC, ReactNode, useContext, useEffect, useState } from 'react';
 
-import { usersCollection } from '@/fire/app';
 import { UserDoc } from '@/fire/docs';
 import { assertDefined } from '@/utils/assert-defined';
 
 import { useAuth } from './auth';
+import { useCollections } from './collections';
 
 type State = UserDoc;
 
 const useMeProvider = () => {
   const { user } = useAuth();
   assertDefined(user);
+
+  const { usersCollection } = useCollections();
 
   const [state, setState] = useState<State>();
 

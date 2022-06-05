@@ -6,10 +6,12 @@ import {
   updateProfile,
 } from 'firebase/auth';
 
-import { usersCollection } from '@/fire/app';
 import { UserDoc } from '@/fire/docs/user';
+import { useCollections } from '@/providers/collections';
 
 export const useSignUp = () => {
+  const { usersCollection } = useCollections();
+
   const signUp = async ({
     name,
     email,
@@ -29,5 +31,6 @@ export const useSignUp = () => {
     await sendEmailVerification(authUser);
     return false;
   };
+
   return { signUp };
 };
